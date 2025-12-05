@@ -1,0 +1,6 @@
+verilog xil_defaultlib --include "G:/vivado.2021.2/Vivado/2021.2/data/xilinx_vip/include" \
+"../../../../zc706_ad9361.gen/sources_1/ip/dac_ila_fifo_1/sim/dac_ila_fifo.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+nosort

@@ -1,0 +1,25 @@
+# Vivado generated files
+*.jou
+*.log
+*.str
+*.dcp
+*.zip
+*.tmp
+*.os
+
+# Vivado Directories to ignore
+.Xil/
+.cache/
+.hw/
+.ip_user_files/
+.sim/
+*.runs/
+*.srcs/utils_1/
+echo "*.cache/" >> .gitignore
+# SDK / Vitis
+.sdk/
+.metadata/
+*.elf
+*.hdf
+*.xsa
+zc706_ad9361.cache/
