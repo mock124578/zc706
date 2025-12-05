@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Thu Oct 16 17:31:32 2025
+-- Date        : Fri Dec  5 17:25:41 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top system_axi_sysid_0_0 -prefix
---               system_axi_sysid_0_0_ system_axi_sysid_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_sysid_0_0/system_axi_sysid_0_0_sim_netlist.vhdl
 -- Design      : system_axi_sysid_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -46,6 +46,8 @@ entity system_axi_sysid_0_0_up_axi is
     sys_rom_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
     pr_rom_data : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_sysid_0_0_up_axi : entity is "up_axi";
 end system_axi_sysid_0_0_up_axi;
 
 architecture STRUCTURE of system_axi_sysid_0_0_up_axi is
@@ -3139,6 +3141,8 @@ entity system_axi_sysid_0_0_axi_sysid is
     sys_rom_data : in STD_LOGIC_VECTOR ( 31 downto 0 );
     pr_rom_data : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_sysid_0_0_axi_sysid : entity is "axi_sysid";
 end system_axi_sysid_0_0_axi_sysid;
 
 architecture STRUCTURE of system_axi_sysid_0_0_axi_sysid is

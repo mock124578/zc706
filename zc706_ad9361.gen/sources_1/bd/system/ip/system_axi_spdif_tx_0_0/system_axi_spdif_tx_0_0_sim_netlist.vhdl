@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Thu Oct 16 17:33:23 2025
+-- Date        : Fri Dec  5 17:24:48 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top system_axi_spdif_tx_0_0 -prefix
---               system_axi_spdif_tx_0_0_ system_axi_spdif_tx_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_spdif_tx_0_0/system_axi_spdif_tx_0_0_sim_netlist.vhdl
 -- Design      : system_axi_spdif_tx_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -39,6 +39,8 @@ entity system_axi_spdif_tx_0_0_axi_ctrlif is
     s_axi_aresetn : in STD_LOGIC;
     s_axi_araddr : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_spdif_tx_0_0_axi_ctrlif : entity is "axi_ctrlif";
 end system_axi_spdif_tx_0_0_axi_ctrlif;
 
 architecture STRUCTURE of system_axi_spdif_tx_0_0_axi_ctrlif is
@@ -645,6 +647,8 @@ entity system_axi_spdif_tx_0_0_dma_fifo is
     \state[0]_i_2\ : in STD_LOGIC;
     \state[0]_i_2_0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_spdif_tx_0_0_dma_fifo : entity is "dma_fifo";
 end system_axi_spdif_tx_0_0_dma_fifo;
 
 architecture STRUCTURE of system_axi_spdif_tx_0_0_dma_fifo is
@@ -1364,6 +1368,8 @@ entity system_axi_spdif_tx_0_0_tx_encoder is
     \par_cnt[0]_i_9_0\ : in STD_LOGIC_VECTOR ( 5 downto 0 );
     D : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_spdif_tx_0_0_tx_encoder : entity is "tx_encoder";
 end system_axi_spdif_tx_0_0_tx_encoder;
 
 architecture STRUCTURE of system_axi_spdif_tx_0_0_tx_encoder is
@@ -3097,6 +3103,8 @@ entity system_axi_spdif_tx_0_0_pl330_dma_fifo is
     dma_req_rstn : in STD_LOGIC;
     dma_req_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_spdif_tx_0_0_pl330_dma_fifo : entity is "pl330_dma_fifo";
 end system_axi_spdif_tx_0_0_pl330_dma_fifo;
 
 architecture STRUCTURE of system_axi_spdif_tx_0_0_pl330_dma_fifo is
@@ -3293,6 +3301,8 @@ entity system_axi_spdif_tx_0_0_axi_spdif_tx is
   attribute DEVICE_FAMILY of system_axi_spdif_tx_0_0_axi_spdif_tx : entity is "virtex6";
   attribute DMA_TYPE : integer;
   attribute DMA_TYPE of system_axi_spdif_tx_0_0_axi_spdif_tx : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_axi_spdif_tx_0_0_axi_spdif_tx : entity is "axi_spdif_tx";
   attribute S_AXI_ADDRESS_WIDTH : integer;
   attribute S_AXI_ADDRESS_WIDTH of system_axi_spdif_tx_0_0_axi_spdif_tx : entity is 16;
   attribute S_AXI_DATA_WIDTH : integer;

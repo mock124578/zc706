@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Fri Oct 17 13:45:51 2025
+-- Date        : Fri Dec  5 17:25:04 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top system_clk_wiz_1_0 -prefix
---               system_clk_wiz_1_0_ system_clk_wiz_1_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_clk_wiz_1_0/system_clk_wiz_1_0_sim_netlist.vhdl
 -- Design      : system_clk_wiz_1_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -14,15 +14,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz is
+entity system_clk_wiz_1_0_clk_wiz is
   port (
     clk_out1 : out STD_LOGIC;
     clk_in1_p : in STD_LOGIC;
     clk_in1_n : in STD_LOGIC
   );
-end system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz;
+end system_clk_wiz_1_0_clk_wiz;
 
-architecture STRUCTURE of system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz is
+architecture STRUCTURE of system_clk_wiz_1_0_clk_wiz is
   signal clk_in1_system_clk_wiz_1_0 : STD_LOGIC;
   signal clk_out1_system_clk_wiz_1_0 : STD_LOGIC;
   signal clkfbout_buf_system_clk_wiz_1_0 : STD_LOGIC;
@@ -178,7 +178,7 @@ end system_clk_wiz_1_0;
 
 architecture STRUCTURE of system_clk_wiz_1_0 is
 begin
-inst: entity work.system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz
+inst: entity work.system_clk_wiz_1_0_clk_wiz
      port map (
       clk_in1_n => clk_in1_n,
       clk_in1_p => clk_in1_p,

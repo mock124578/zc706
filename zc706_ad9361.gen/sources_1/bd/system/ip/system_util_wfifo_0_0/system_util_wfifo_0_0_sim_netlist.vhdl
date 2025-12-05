@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Tue Oct 14 11:38:07 2025
+-- Date        : Fri Dec  5 17:24:39 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top system_util_wfifo_0_0 -prefix
---               system_util_wfifo_0_0_ system_util_wfifo_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_util_wfifo_0_0/system_util_wfifo_0_0_sim_netlist.vhdl
 -- Design      : system_util_wfifo_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -25,6 +25,8 @@ entity system_util_wfifo_0_0_ad_mem is
     din_wdata : in STD_LOGIC_VECTOR ( 63 downto 0 );
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_util_wfifo_0_0_ad_mem : entity is "ad_mem";
 end system_util_wfifo_0_0_ad_mem;
 
 architecture STRUCTURE of system_util_wfifo_0_0_ad_mem is
@@ -205,6 +207,8 @@ entity system_util_wfifo_0_0_util_wfifo is
   attribute M_MEM_RATIO of system_util_wfifo_0_0_util_wfifo : entity is 1;
   attribute NUM_OF_CHANNELS : integer;
   attribute NUM_OF_CHANNELS of system_util_wfifo_0_0_util_wfifo : entity is 4;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_util_wfifo_0_0_util_wfifo : entity is "util_wfifo";
   attribute T_DIN_DATA_WIDTH : integer;
   attribute T_DIN_DATA_WIDTH of system_util_wfifo_0_0_util_wfifo : entity is 128;
   attribute T_DOUT_DATA_WIDTH : integer;

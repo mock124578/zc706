@@ -7,7 +7,8 @@
       "name": "system",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2021.2"
+      "tool_version": "2021.2",
+      "validated": "true"
     },
     "design_tree": {
       "sys_ps7": "",
@@ -46,27 +47,77 @@
       "ila_0": "",
       "axi_ad9361_dac_fifo": "",
       "ila_2": "",
-      "cordic_rotate_qi0": "",
-      "cordic_arc_qi0": "",
       "adc_fifo_ila": "",
-      "cordic_rotate_dac_qi0": "",
-      "cordic_dac_arc_qi0": "",
       "dac_ila_fifo": "",
       "axi_hp2_interconnect": "",
-      "axi_hp1_interconnect": "",
-      "dds_lo_0": "",
-      "downconvert_ip_0": ""
+      "axi_hp1_interconnect": ""
     },
     "interface_ports": {
       "ddr": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:ddrx:1.0",
-        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0"
+        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0",
+        "parameters": {
+          "AXI_ARBITRATION_SCHEME": {
+            "value": "TDM",
+            "value_src": "default"
+          },
+          "BURST_LENGTH": {
+            "value": "8",
+            "value_src": "default"
+          },
+          "CAN_DEBUG": {
+            "value": "false",
+            "value_src": "default"
+          },
+          "CAS_LATENCY": {
+            "value": "11",
+            "value_src": "default"
+          },
+          "CAS_WRITE_LATENCY": {
+            "value": "11",
+            "value_src": "default"
+          },
+          "CS_ENABLED": {
+            "value": "true",
+            "value_src": "default"
+          },
+          "DATA_MASK_ENABLED": {
+            "value": "true",
+            "value_src": "default"
+          },
+          "DATA_WIDTH": {
+            "value": "8",
+            "value_src": "default"
+          },
+          "MEMORY_TYPE": {
+            "value": "COMPONENTS",
+            "value_src": "default"
+          },
+          "MEM_ADDR_MAP": {
+            "value": "ROW_COLUMN_BANK",
+            "value_src": "default"
+          },
+          "SLOT": {
+            "value": "Single",
+            "value_src": "default"
+          },
+          "TIMEPERIOD_PS": {
+            "value": "1250",
+            "value_src": "default"
+          }
+        }
       },
       "fixed_io": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:display_processing_system7:fixedio:1.0",
-        "vlnv": "xilinx.com:display_processing_system7:fixedio_rtl:1.0"
+        "vlnv": "xilinx.com:display_processing_system7:fixedio_rtl:1.0",
+        "parameters": {
+          "CAN_DEBUG": {
+            "value": "false",
+            "value_src": "default"
+          }
+        }
       },
       "iic_main": {
         "mode": "Master",
@@ -215,6 +266,18 @@
         "parameters": {
           "FREQ_HZ": {
             "value": "50000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
           }
         }
       },
@@ -222,8 +285,24 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "CLK_DOMAIN": {
+            "value": "system_sys_clk_n",
+            "value_src": "default"
+          },
           "FREQ_HZ": {
             "value": "200000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
           }
         }
       },
@@ -231,8 +310,24 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "CLK_DOMAIN": {
+            "value": "system_sys_clk_p",
+            "value_src": "default"
+          },
           "FREQ_HZ": {
             "value": "200000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
           }
         }
       }
@@ -2387,7 +2482,7 @@
             "value": "Native"
           },
           "C_NUM_OF_PROBES": {
-            "value": "5"
+            "value": "4"
           },
           "C_PROBE0_WIDTH": {
             "value": "16"
@@ -2399,7 +2494,7 @@
             "value": "16"
           },
           "C_PROBE4_WIDTH": {
-            "value": "32"
+            "value": "1"
           },
           "C_PROBE5_WIDTH": {
             "value": "1"
@@ -2445,7 +2540,7 @@
             "value": "Native"
           },
           "C_NUM_OF_PROBES": {
-            "value": "7"
+            "value": "4"
           },
           "C_PROBE0_WIDTH": {
             "value": "16"
@@ -2460,44 +2555,16 @@
             "value": "16"
           },
           "C_PROBE4_WIDTH": {
-            "value": "32"
+            "value": "1"
           },
           "C_PROBE5_WIDTH": {
-            "value": "16"
+            "value": "1"
           },
           "C_PROBE6_WIDTH": {
-            "value": "16"
+            "value": "1"
           },
           "C_PROBE7_WIDTH": {
             "value": "1"
-          }
-        }
-      },
-      "cordic_rotate_qi0": {
-        "vlnv": "xilinx.com:ip:cordic:6.0",
-        "xci_name": "system_cordic_0_0",
-        "xci_path": "ip\\system_cordic_0_0\\system_cordic_0_0.xci",
-        "inst_hier_path": "cordic_rotate_qi0",
-        "parameters": {
-          "Compensation_Scaling": {
-            "value": "LUT_based"
-          }
-        }
-      },
-      "cordic_arc_qi0": {
-        "vlnv": "xilinx.com:ip:cordic:6.0",
-        "xci_name": "system_cordic_0_1",
-        "xci_path": "ip\\system_cordic_0_1\\system_cordic_0_1.xci",
-        "inst_hier_path": "cordic_arc_qi0",
-        "parameters": {
-          "Data_Format": {
-            "value": "SignedFraction"
-          },
-          "Functional_Selection": {
-            "value": "Arc_Tan"
-          },
-          "Output_Width": {
-            "value": "32"
           }
         }
       },
@@ -2506,34 +2573,6 @@
         "xci_name": "system_adc_fifo_ad9361_0_0",
         "xci_path": "ip\\system_adc_fifo_ad9361_0_0\\system_adc_fifo_ad9361_0_0.xci",
         "inst_hier_path": "adc_fifo_ila"
-      },
-      "cordic_rotate_dac_qi0": {
-        "vlnv": "xilinx.com:ip:cordic:6.0",
-        "xci_name": "system_cordic_0_2",
-        "xci_path": "ip\\system_cordic_0_2\\system_cordic_0_2.xci",
-        "inst_hier_path": "cordic_rotate_dac_qi0",
-        "parameters": {
-          "Compensation_Scaling": {
-            "value": "LUT_based"
-          }
-        }
-      },
-      "cordic_dac_arc_qi0": {
-        "vlnv": "xilinx.com:ip:cordic:6.0",
-        "xci_name": "system_cordic_0_3",
-        "xci_path": "ip\\system_cordic_0_3\\system_cordic_0_3.xci",
-        "inst_hier_path": "cordic_dac_arc_qi0",
-        "parameters": {
-          "Data_Format": {
-            "value": "SignedFraction"
-          },
-          "Functional_Selection": {
-            "value": "Arc_Tan"
-          },
-          "Output_Width": {
-            "value": "32"
-          }
-        }
       },
       "dac_ila_fifo": {
         "vlnv": "xilinx.com:user:wr_rd:1.0",
@@ -2660,55 +2699,6 @@
             }
           }
         }
-      },
-      "dds_lo_0": {
-        "vlnv": "xilinx.com:module_ref:dds_lo:1.0",
-        "xci_name": "system_dds_lo_0_1",
-        "xci_path": "ip\\system_dds_lo_0_1\\system_dds_lo_0_1.xci",
-        "inst_hier_path": "dds_lo_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "dds_lo",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "clk": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "ASSOCIATED_RESET": {
-                "value": "rstn",
-                "value_src": "constant"
-              }
-            }
-          },
-          "rstn": {
-            "type": "rst",
-            "direction": "I",
-            "parameters": {
-              "POLARITY": {
-                "value": "ACTIVE_LOW",
-                "value_src": "constant"
-              }
-            }
-          },
-          "lo_i": {
-            "direction": "O",
-            "left": "15",
-            "right": "0"
-          },
-          "lo_q": {
-            "direction": "O",
-            "left": "15",
-            "right": "0"
-          }
-        }
-      },
-      "downconvert_ip_0": {
-        "vlnv": "xilinx.com:hls:downconvert_ip:1.0",
-        "xci_name": "system_downconvert_ip_0_0",
-        "xci_path": "ip\\system_downconvert_ip_0_0\\system_downconvert_ip_0_0.xci",
-        "inst_hier_path": "downconvert_ip_0"
       }
     },
     "interface_nets": {
@@ -2794,18 +2784,6 @@
         "interface_ports": [
           "axi_spdif_tx_core/dma_req",
           "sys_ps7/DMA0_REQ"
-        ]
-      },
-      "cordic_rotate_dac_qi0_M_AXIS_DOUT": {
-        "interface_ports": [
-          "cordic_rotate_dac_qi0/M_AXIS_DOUT",
-          "cordic_dac_arc_qi0/S_AXIS_CARTESIAN"
-        ]
-      },
-      "cordic_rotate_qi0_M_AXIS_DOUT": {
-        "interface_ports": [
-          "cordic_rotate_qi0/M_AXIS_DOUT",
-          "cordic_arc_qi0/S_AXIS_CARTESIAN"
         ]
       },
       "sys_ps7_DDR": {
@@ -2899,24 +2877,16 @@
           "sys_ps7/SPI1_MOSI_I"
         ]
       },
-      "adc_fifo_ila_q_i_0": {
-        "ports": [
-          "adc_fifo_ila/q_i_0",
-          "cordic_rotate_qi0/s_axis_cartesian_tdata"
-        ]
-      },
       "adc_fifo_ila_rd_data_0": {
         "ports": [
           "adc_fifo_ila/ila_data_0",
-          "ila_2/probe0",
-          "downconvert_ip_0/adc_q"
+          "ila_2/probe0"
         ]
       },
       "adc_fifo_ila_rd_data_1": {
         "ports": [
           "adc_fifo_ila/ila_data_1",
-          "ila_2/probe1",
-          "downconvert_ip_0/adc_i"
+          "ila_2/probe1"
         ]
       },
       "adc_fifo_ila_rd_data_2": {
@@ -2929,12 +2899,6 @@
         "ports": [
           "adc_fifo_ila/ila_data_3",
           "ila_2/probe3"
-        ]
-      },
-      "adc_fifo_ila_valid_in": {
-        "ports": [
-          "adc_fifo_ila/valid_in",
-          "cordic_rotate_qi0/s_axis_cartesian_tvalid"
         ]
       },
       "axi_ad9361_0_adc_data_i0": {
@@ -3195,62 +3159,8 @@
           "clk_wiz_1/clk_out1",
           "ila_0/clk",
           "ila_2/clk",
-          "cordic_rotate_qi0/aclk",
-          "cordic_arc_qi0/aclk",
           "adc_fifo_ila/adc_rd_clk",
-          "cordic_rotate_dac_qi0/aclk",
-          "cordic_dac_arc_qi0/aclk",
-          "dac_ila_fifo/rd_clk",
-          "downconvert_ip_0/clk",
-          "dds_lo_0/clk"
-        ]
-      },
-      "cordic_arc_qi0_m_axis_dout_tdata": {
-        "ports": [
-          "cordic_arc_qi0/m_axis_dout_tdata",
-          "ila_2/probe4"
-        ]
-      },
-      "cordic_dac_arc_qi0_m_axis_dout_tdata": {
-        "ports": [
-          "cordic_dac_arc_qi0/m_axis_dout_tdata",
-          "ila_0/probe4"
-        ]
-      },
-      "dac_ila_fifo_dac_q_i_0": {
-        "ports": [
-          "dac_ila_fifo/dac_q_i_0",
-          "cordic_rotate_dac_qi0/s_axis_cartesian_tdata"
-        ]
-      },
-      "dac_ila_fifo_valid_in": {
-        "ports": [
-          "dac_ila_fifo/valid_in",
-          "cordic_rotate_dac_qi0/s_axis_cartesian_tvalid"
-        ]
-      },
-      "dds_lo_0_lo_i": {
-        "ports": [
-          "dds_lo_0/lo_i",
-          "downconvert_ip_0/lo_i"
-        ]
-      },
-      "dds_lo_0_lo_q": {
-        "ports": [
-          "dds_lo_0/lo_q",
-          "downconvert_ip_0/lo_q"
-        ]
-      },
-      "downconvert_ip_0_bb_i": {
-        "ports": [
-          "downconvert_ip_0/bb_i",
-          "ila_2/probe5"
-        ]
-      },
-      "downconvert_ip_0_bb_q": {
-        "ports": [
-          "downconvert_ip_0/bb_q",
-          "ila_2/probe6"
+          "dac_ila_fifo/rd_clk"
         ]
       },
       "gpio_i_1": {

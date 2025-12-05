@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
-// Date        : Fri Oct 17 13:45:51 2025
+// Date        : Fri Dec  5 17:25:04 2025
 // Host        : little running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top system_clk_wiz_1_0 -prefix
-//               system_clk_wiz_1_0_ system_clk_wiz_1_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_clk_wiz_1_0/system_clk_wiz_1_0_sim_netlist.v
 // Design      : system_clk_wiz_1_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -25,13 +25,13 @@ module system_clk_wiz_1_0
   (* DIFF_TERM = 0 *) (* IBUF_LOW_PWR *) wire clk_in1_p;
   wire clk_out1;
 
-  system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz inst
+  system_clk_wiz_1_0_clk_wiz inst
        (.clk_in1_n(clk_in1_n),
         .clk_in1_p(clk_in1_p),
         .clk_out1(clk_out1));
 endmodule
 
-module system_clk_wiz_1_0_system_clk_wiz_1_0_clk_wiz
+module system_clk_wiz_1_0_clk_wiz
    (clk_out1,
     clk_in1_p,
     clk_in1_n);

@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
-// Date        : Fri Oct 17 10:48:39 2025
+// Date        : Fri Dec  5 17:26:27 2025
 // Host        : little running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode synth_stub -rename_top system_axi_dmac_0_0 -prefix
-//               system_axi_dmac_0_0_ system_axi_dmac_0_0_stub.v
+// Command     : write_verilog -force -mode synth_stub
+//               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_0/system_axi_dmac_0_0_stub.v
 // Design      : system_axi_dmac_0_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z045ffg900-2

@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
-//Date        : Fri Nov 14 17:02:52 2025
+//Date        : Fri Dec  5 17:18:08 2025
 //Host        : little running 64-bit major release  (build 9200)
 //Command     : generate_target system.bd
 //Design      : system
@@ -1176,7 +1176,7 @@ module s00_couplers_imp_WZLZH6
         .s_axi_wvalid(s00_couplers_to_auto_pc_WVALID));
 endmodule
 
-(* CORE_GENERATION_INFO = "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=42,numReposBlks=34,numNonXlnxBlks=12,numHierBlks=8,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=7,da_board_cnt=1,da_mb_cnt=2,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "system.hwdef" *) 
+(* CORE_GENERATION_INFO = "system,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=system,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=38,numReposBlks=30,numNonXlnxBlks=12,numHierBlks=8,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=7,da_board_cnt=1,da_mb_cnt=2,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "system.hwdef" *) 
 module system
    (ddr_addr,
     ddr_ba,
@@ -1365,12 +1365,10 @@ module system
   wire SPI0_SS_I_0_1;
   wire SPI1_MISO_I_0_1;
   wire SPI1_MOSI_I_0_1;
-  wire [31:0]adc_fifo_ila_q_i_0;
   wire [15:0]adc_fifo_ila_rd_data_0;
   wire [15:0]adc_fifo_ila_rd_data_1;
   wire [15:0]adc_fifo_ila_rd_data_2;
   wire [15:0]adc_fifo_ila_rd_data_3;
-  wire adc_fifo_ila_valid_in;
   wire [15:0]axi_ad9361_0_adc_data_i0;
   wire [15:0]axi_ad9361_0_adc_data_i1;
   wire [15:0]axi_ad9361_0_adc_data_q0;
@@ -1599,14 +1597,6 @@ module system
   wire clk_in1_n_0_1;
   wire clk_in1_p_0_1;
   wire clk_wiz_1_clk_out1;
-  wire [31:0]cordic_arc_qi0_m_axis_dout_tdata;
-  wire [31:0]cordic_dac_arc_qi0_m_axis_dout_tdata;
-  wire [31:0]cordic_rotate_dac_qi0_M_AXIS_DOUT_TDATA;
-  wire cordic_rotate_dac_qi0_M_AXIS_DOUT_TVALID;
-  wire [31:0]cordic_rotate_qi0_M_AXIS_DOUT_TDATA;
-  wire cordic_rotate_qi0_M_AXIS_DOUT_TVALID;
-  wire [31:0]dac_ila_fifo_dac_q_i_0;
-  wire dac_ila_fifo_valid_in;
   wire [63:0]gpio_i_1;
   wire microblaze_0_Clk;
   wire rx_clk_in_n_0_1;
@@ -1766,9 +1756,7 @@ module system
         .ila_data_0(adc_fifo_ila_rd_data_0),
         .ila_data_1(adc_fifo_ila_rd_data_1),
         .ila_data_2(adc_fifo_ila_rd_data_2),
-        .ila_data_3(adc_fifo_ila_rd_data_3),
-        .q_i_0(adc_fifo_ila_q_i_0),
-        .valid_in(adc_fifo_ila_valid_in));
+        .ila_data_3(adc_fifo_ila_rd_data_3));
   system_axi_ad9361_0_0 axi_ad9361
        (.adc_data_i0(axi_ad9361_0_adc_data_i0),
         .adc_data_i1(axi_ad9361_0_adc_data_i1),
@@ -2293,41 +2281,13 @@ module system
        (.clk_in1_n(clk_in1_n_0_1),
         .clk_in1_p(clk_in1_p_0_1),
         .clk_out1(clk_wiz_1_clk_out1));
-  system_cordic_0_1 cordic_arc_qi0
-       (.aclk(clk_wiz_1_clk_out1),
-        .m_axis_dout_tdata(cordic_arc_qi0_m_axis_dout_tdata),
-        .s_axis_cartesian_tdata(cordic_rotate_qi0_M_AXIS_DOUT_TDATA),
-        .s_axis_cartesian_tvalid(cordic_rotate_qi0_M_AXIS_DOUT_TVALID));
-  system_cordic_0_3 cordic_dac_arc_qi0
-       (.aclk(clk_wiz_1_clk_out1),
-        .m_axis_dout_tdata(cordic_dac_arc_qi0_m_axis_dout_tdata),
-        .s_axis_cartesian_tdata(cordic_rotate_dac_qi0_M_AXIS_DOUT_TDATA),
-        .s_axis_cartesian_tvalid(cordic_rotate_dac_qi0_M_AXIS_DOUT_TVALID));
-  system_cordic_0_2 cordic_rotate_dac_qi0
-       (.aclk(clk_wiz_1_clk_out1),
-        .m_axis_dout_tdata(cordic_rotate_dac_qi0_M_AXIS_DOUT_TDATA),
-        .m_axis_dout_tvalid(cordic_rotate_dac_qi0_M_AXIS_DOUT_TVALID),
-        .s_axis_cartesian_tdata(dac_ila_fifo_dac_q_i_0),
-        .s_axis_cartesian_tvalid(dac_ila_fifo_valid_in),
-        .s_axis_phase_tdata({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}),
-        .s_axis_phase_tvalid(1'b0));
-  system_cordic_0_0 cordic_rotate_qi0
-       (.aclk(clk_wiz_1_clk_out1),
-        .m_axis_dout_tdata(cordic_rotate_qi0_M_AXIS_DOUT_TDATA),
-        .m_axis_dout_tvalid(cordic_rotate_qi0_M_AXIS_DOUT_TVALID),
-        .s_axis_cartesian_tdata(adc_fifo_ila_q_i_0),
-        .s_axis_cartesian_tvalid(adc_fifo_ila_valid_in),
-        .s_axis_phase_tdata({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}),
-        .s_axis_phase_tvalid(1'b0));
   system_wr_rd_0_15 dac_ila_fifo
-       (.dac_q_i_0(dac_ila_fifo_dac_q_i_0),
-        .rd_clk(clk_wiz_1_clk_out1),
+       (.rd_clk(clk_wiz_1_clk_out1),
         .rd_data_0(wr_rd_0_rd_data_0),
         .rd_data_1(wr_rd_0_rd_data_1),
         .rd_data_2(wr_rd_0_rd_data_2),
         .rd_data_3(wr_rd_0_rd_data_3),
         .rd_rst(1'b0),
-        .valid_in(dac_ila_fifo_valid_in),
         .wr_clk(axi_ad9361_0_l_clk),
         .wr_data_0(util_ad9361_dac_fifo_dout_data_0),
         .wr_data_1(util_ad9361_dac_fifo_dout_data_1),
@@ -2339,15 +2299,13 @@ module system
         .probe0(wr_rd_0_rd_data_0),
         .probe1(wr_rd_0_rd_data_1),
         .probe2(wr_rd_0_rd_data_2),
-        .probe3(wr_rd_0_rd_data_3),
-        .probe4(cordic_dac_arc_qi0_m_axis_dout_tdata));
+        .probe3(wr_rd_0_rd_data_3));
   system_ila_2_0 ila_2
        (.clk(clk_wiz_1_clk_out1),
         .probe0(adc_fifo_ila_rd_data_0),
         .probe1(adc_fifo_ila_rd_data_1),
         .probe2(adc_fifo_ila_rd_data_2),
-        .probe3(adc_fifo_ila_rd_data_3),
-        .probe4(cordic_arc_qi0_m_axis_dout_tdata));
+        .probe3(adc_fifo_ila_rd_data_3));
   system_sysid_rom_0_0 rom_sys_0
        (.clk(microblaze_0_Clk),
         .rom_addr(axi_sysid_0_rom_addr),

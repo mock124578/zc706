@@ -1157,38 +1157,6 @@
 						"WVALID": { "actual": "s_axi_wvalid"}
 					}
 				},
-				"/cordic_arc_qi0/S_AXIS_CARTESIAN": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"TDATA": { "actual": "s_axis_cartesian_tdata"},
-						"TVALID": { "actual": "s_axis_cartesian_tvalid"}
-					}
-				},
-				"/cordic_dac_arc_qi0/S_AXIS_CARTESIAN": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"TDATA": { "actual": "s_axis_cartesian_tdata"},
-						"TVALID": { "actual": "s_axis_cartesian_tvalid"}
-					}
-				},
-				"/cordic_rotate_dac_qi0/M_AXIS_DOUT": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"TDATA": { "actual": "m_axis_dout_tdata"},
-						"TVALID": { "actual": "m_axis_dout_tvalid"}
-					}
-				},
-				"/cordic_rotate_qi0/M_AXIS_DOUT": {
-					"interface": "xilinx.com:interface:axis:1.0",
-					"ports": {
-						"ACLK": { "actual": "aclk"},
-						"TDATA": { "actual": "m_axis_dout_tdata"},
-						"TVALID": { "actual": "m_axis_dout_tvalid"}
-					}
-				},
 				"/sys_ps7/DMA0_ACK": {
 					"interface": "xilinx.com:interface:axis:1.0",
 					"ports": {

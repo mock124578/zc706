@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Thu Oct 16 17:31:42 2025
+-- Date        : Fri Dec  5 17:24:39 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode funcsim -rename_top system_util_tdd_sync_0_0 -prefix
---               system_util_tdd_sync_0_0_ system_util_tdd_sync_0_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_util_tdd_sync_0_0/system_util_tdd_sync_0_0_sim_netlist.vhdl
 -- Design      : system_util_tdd_sync_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -23,6 +23,8 @@ entity system_util_tdd_sync_0_0_util_pulse_gen is
     sync_mode_d2 : in STD_LOGIC;
     rstn : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_util_tdd_sync_0_0_util_pulse_gen : entity is "util_pulse_gen";
 end system_util_tdd_sync_0_0_util_pulse_gen;
 
 architecture STRUCTURE of system_util_tdd_sync_0_0_util_pulse_gen is
@@ -1370,6 +1372,8 @@ entity system_util_tdd_sync_0_0_util_tdd_sync is
     sync_in : in STD_LOGIC;
     sync_out : out STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of system_util_tdd_sync_0_0_util_tdd_sync : entity is "util_tdd_sync";
   attribute TDD_SYNC_PERIOD : integer;
   attribute TDD_SYNC_PERIOD of system_util_tdd_sync_0_0_util_tdd_sync : entity is 10000000;
 end system_util_tdd_sync_0_0_util_tdd_sync;

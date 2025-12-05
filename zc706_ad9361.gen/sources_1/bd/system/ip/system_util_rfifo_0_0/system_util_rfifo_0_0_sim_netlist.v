@@ -1,120 +1,16 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
-// Date        : Thu Oct 16 18:34:13 2025
+// Date        : Fri Dec  5 17:25:40 2025
 // Host        : little running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim -rename_top system_util_rfifo_0_0 -prefix
-//               system_util_rfifo_0_0_ system_util_rfifo_0_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_util_rfifo_0_0/system_util_rfifo_0_0_sim_netlist.v
 // Design      : system_util_rfifo_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7z045ffg900-2
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
-
-module system_util_rfifo_0_0_ad_mem
-   (DOADO,
-    DOBDO,
-    dout_clk,
-    din_clk,
-    Q,
-    m_ram_reg_0,
-    din_wdata,
-    WEBWE);
-  output [31:0]DOADO;
-  output [31:0]DOBDO;
-  input dout_clk;
-  input din_clk;
-  input [4:0]Q;
-  input [4:0]m_ram_reg_0;
-  input [63:0]din_wdata;
-  input [0:0]WEBWE;
-
-  wire [31:0]DOADO;
-  wire [31:0]DOBDO;
-  wire [4:0]Q;
-  wire [0:0]WEBWE;
-  wire din_clk;
-  wire [63:0]din_wdata;
-  wire dout_clk;
-  wire [4:0]m_ram_reg_0;
-  wire NLW_m_ram_reg_CASCADEOUTA_UNCONNECTED;
-  wire NLW_m_ram_reg_CASCADEOUTB_UNCONNECTED;
-  wire NLW_m_ram_reg_DBITERR_UNCONNECTED;
-  wire NLW_m_ram_reg_SBITERR_UNCONNECTED;
-  wire [3:0]NLW_m_ram_reg_DOPADOP_UNCONNECTED;
-  wire [3:0]NLW_m_ram_reg_DOPBDOP_UNCONNECTED;
-  wire [7:0]NLW_m_ram_reg_ECCPARITY_UNCONNECTED;
-  wire [8:0]NLW_m_ram_reg_RDADDRECC_UNCONNECTED;
-
-  (* \MEM.PORTA.DATA_BIT_LAYOUT  = "p0_d64" *) 
-  (* \MEM.PORTB.DATA_BIT_LAYOUT  = "p0_d64" *) 
-  (* METHODOLOGY_DRC_VIOS = "" *) 
-  (* RTL_RAM_BITS = "2048" *) 
-  (* RTL_RAM_NAME = "i_mem/m_ram" *) 
-  (* RTL_RAM_TYPE = "RAM_SDP" *) 
-  (* ram_addr_begin = "0" *) 
-  (* ram_addr_end = "511" *) 
-  (* ram_offset = "480" *) 
-  (* ram_slice_begin = "0" *) 
-  (* ram_slice_end = "63" *) 
-  RAMB36E1 #(
-    .DOA_REG(1),
-    .DOB_REG(1),
-    .EN_ECC_READ("FALSE"),
-    .EN_ECC_WRITE("FALSE"),
-    .INIT_A(36'h000000000),
-    .INIT_B(36'h000000000),
-    .RAM_EXTENSION_A("NONE"),
-    .RAM_EXTENSION_B("NONE"),
-    .RAM_MODE("SDP"),
-    .RDADDR_COLLISION_HWCONFIG("DELAYED_WRITE"),
-    .READ_WIDTH_A(72),
-    .READ_WIDTH_B(0),
-    .RSTREG_PRIORITY_A("RSTREG"),
-    .RSTREG_PRIORITY_B("RSTREG"),
-    .SIM_COLLISION_CHECK("ALL"),
-    .SIM_DEVICE("7SERIES"),
-    .SRVAL_A(36'h000000000),
-    .SRVAL_B(36'h000000000),
-    .WRITE_MODE_A("WRITE_FIRST"),
-    .WRITE_MODE_B("WRITE_FIRST"),
-    .WRITE_WIDTH_A(0),
-    .WRITE_WIDTH_B(72)) 
-    m_ram_reg
-       (.ADDRARDADDR({1'b1,1'b1,1'b1,1'b1,1'b1,Q,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1}),
-        .ADDRBWRADDR({1'b1,1'b1,1'b1,1'b1,1'b1,m_ram_reg_0,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1}),
-        .CASCADEINA(1'b0),
-        .CASCADEINB(1'b0),
-        .CASCADEOUTA(NLW_m_ram_reg_CASCADEOUTA_UNCONNECTED),
-        .CASCADEOUTB(NLW_m_ram_reg_CASCADEOUTB_UNCONNECTED),
-        .CLKARDCLK(dout_clk),
-        .CLKBWRCLK(din_clk),
-        .DBITERR(NLW_m_ram_reg_DBITERR_UNCONNECTED),
-        .DIADI(din_wdata[31:0]),
-        .DIBDI(din_wdata[63:32]),
-        .DIPADIP({1'b1,1'b1,1'b1,1'b1}),
-        .DIPBDIP({1'b1,1'b1,1'b1,1'b1}),
-        .DOADO(DOADO),
-        .DOBDO(DOBDO),
-        .DOPADOP(NLW_m_ram_reg_DOPADOP_UNCONNECTED[3:0]),
-        .DOPBDOP(NLW_m_ram_reg_DOPBDOP_UNCONNECTED[3:0]),
-        .ECCPARITY(NLW_m_ram_reg_ECCPARITY_UNCONNECTED[7:0]),
-        .ENARDEN(1'b1),
-        .ENBWREN(1'b1),
-        .INJECTDBITERR(1'b0),
-        .INJECTSBITERR(1'b0),
-        .RDADDRECC(NLW_m_ram_reg_RDADDRECC_UNCONNECTED[8:0]),
-        .REGCEAREGCE(1'b1),
-        .REGCEB(1'b0),
-        .RSTRAMARSTRAM(1'b0),
-        .RSTRAMB(1'b0),
-        .RSTREGARSTREG(1'b0),
-        .RSTREGB(1'b0),
-        .SBITERR(NLW_m_ram_reg_SBITERR_UNCONNECTED),
-        .WEA({1'b0,1'b0,1'b0,1'b0}),
-        .WEBWE({WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE}));
-endmodule
 
 (* CHECK_LICENSE_TYPE = "system_util_rfifo_0_0,util_rfifo,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "package_project" *) 
 (* X_CORE_INFO = "util_rfifo,Vivado 2021.2" *) 
@@ -331,9 +227,115 @@ module system_util_rfifo_0_0
         .dout_valid_out_7(NLW_inst_dout_valid_out_7_UNCONNECTED));
 endmodule
 
+(* ORIG_REF_NAME = "ad_mem" *) 
+module system_util_rfifo_0_0_ad_mem
+   (DOADO,
+    DOBDO,
+    dout_clk,
+    din_clk,
+    Q,
+    m_ram_reg_0,
+    din_wdata,
+    WEBWE);
+  output [31:0]DOADO;
+  output [31:0]DOBDO;
+  input dout_clk;
+  input din_clk;
+  input [4:0]Q;
+  input [4:0]m_ram_reg_0;
+  input [63:0]din_wdata;
+  input [0:0]WEBWE;
+
+  wire [31:0]DOADO;
+  wire [31:0]DOBDO;
+  wire [4:0]Q;
+  wire [0:0]WEBWE;
+  wire din_clk;
+  wire [63:0]din_wdata;
+  wire dout_clk;
+  wire [4:0]m_ram_reg_0;
+  wire NLW_m_ram_reg_CASCADEOUTA_UNCONNECTED;
+  wire NLW_m_ram_reg_CASCADEOUTB_UNCONNECTED;
+  wire NLW_m_ram_reg_DBITERR_UNCONNECTED;
+  wire NLW_m_ram_reg_SBITERR_UNCONNECTED;
+  wire [3:0]NLW_m_ram_reg_DOPADOP_UNCONNECTED;
+  wire [3:0]NLW_m_ram_reg_DOPBDOP_UNCONNECTED;
+  wire [7:0]NLW_m_ram_reg_ECCPARITY_UNCONNECTED;
+  wire [8:0]NLW_m_ram_reg_RDADDRECC_UNCONNECTED;
+
+  (* \MEM.PORTA.DATA_BIT_LAYOUT  = "p0_d64" *) 
+  (* \MEM.PORTB.DATA_BIT_LAYOUT  = "p0_d64" *) 
+  (* METHODOLOGY_DRC_VIOS = "" *) 
+  (* RTL_RAM_BITS = "2048" *) 
+  (* RTL_RAM_NAME = "i_mem/m_ram" *) 
+  (* RTL_RAM_TYPE = "RAM_SDP" *) 
+  (* ram_addr_begin = "0" *) 
+  (* ram_addr_end = "511" *) 
+  (* ram_offset = "480" *) 
+  (* ram_slice_begin = "0" *) 
+  (* ram_slice_end = "63" *) 
+  RAMB36E1 #(
+    .DOA_REG(1),
+    .DOB_REG(1),
+    .EN_ECC_READ("FALSE"),
+    .EN_ECC_WRITE("FALSE"),
+    .INIT_A(36'h000000000),
+    .INIT_B(36'h000000000),
+    .RAM_EXTENSION_A("NONE"),
+    .RAM_EXTENSION_B("NONE"),
+    .RAM_MODE("SDP"),
+    .RDADDR_COLLISION_HWCONFIG("DELAYED_WRITE"),
+    .READ_WIDTH_A(72),
+    .READ_WIDTH_B(0),
+    .RSTREG_PRIORITY_A("RSTREG"),
+    .RSTREG_PRIORITY_B("RSTREG"),
+    .SIM_COLLISION_CHECK("ALL"),
+    .SIM_DEVICE("7SERIES"),
+    .SRVAL_A(36'h000000000),
+    .SRVAL_B(36'h000000000),
+    .WRITE_MODE_A("WRITE_FIRST"),
+    .WRITE_MODE_B("WRITE_FIRST"),
+    .WRITE_WIDTH_A(0),
+    .WRITE_WIDTH_B(72)) 
+    m_ram_reg
+       (.ADDRARDADDR({1'b1,1'b1,1'b1,1'b1,1'b1,Q,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1}),
+        .ADDRBWRADDR({1'b1,1'b1,1'b1,1'b1,1'b1,m_ram_reg_0,1'b1,1'b1,1'b1,1'b1,1'b1,1'b1}),
+        .CASCADEINA(1'b0),
+        .CASCADEINB(1'b0),
+        .CASCADEOUTA(NLW_m_ram_reg_CASCADEOUTA_UNCONNECTED),
+        .CASCADEOUTB(NLW_m_ram_reg_CASCADEOUTB_UNCONNECTED),
+        .CLKARDCLK(dout_clk),
+        .CLKBWRCLK(din_clk),
+        .DBITERR(NLW_m_ram_reg_DBITERR_UNCONNECTED),
+        .DIADI(din_wdata[31:0]),
+        .DIBDI(din_wdata[63:32]),
+        .DIPADIP({1'b1,1'b1,1'b1,1'b1}),
+        .DIPBDIP({1'b1,1'b1,1'b1,1'b1}),
+        .DOADO(DOADO),
+        .DOBDO(DOBDO),
+        .DOPADOP(NLW_m_ram_reg_DOPADOP_UNCONNECTED[3:0]),
+        .DOPBDOP(NLW_m_ram_reg_DOPBDOP_UNCONNECTED[3:0]),
+        .ECCPARITY(NLW_m_ram_reg_ECCPARITY_UNCONNECTED[7:0]),
+        .ENARDEN(1'b1),
+        .ENBWREN(1'b1),
+        .INJECTDBITERR(1'b0),
+        .INJECTSBITERR(1'b0),
+        .RDADDRECC(NLW_m_ram_reg_RDADDRECC_UNCONNECTED[8:0]),
+        .REGCEAREGCE(1'b1),
+        .REGCEB(1'b0),
+        .RSTRAMARSTRAM(1'b0),
+        .RSTRAMB(1'b0),
+        .RSTREGARSTREG(1'b0),
+        .RSTREGB(1'b0),
+        .SBITERR(NLW_m_ram_reg_SBITERR_UNCONNECTED),
+        .WEA({1'b0,1'b0,1'b0,1'b0}),
+        .WEBWE({WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE,WEBWE}));
+endmodule
+
 (* ADDRESS_WIDTH = "5" *) (* DATA_WIDTH = "64" *) (* DIN_ADDRESS_WIDTH = "4" *) 
 (* DIN_DATA_WIDTH = "16" *) (* DOUT_DATA_WIDTH = "16" *) (* M_MEM_RATIO = "1" *) 
-(* NUM_OF_CHANNELS = "4" *) (* T_DIN_DATA_WIDTH = "128" *) (* T_DOUT_DATA_WIDTH = "128" *) 
+(* NUM_OF_CHANNELS = "4" *) (* ORIG_REF_NAME = "util_rfifo" *) (* T_DIN_DATA_WIDTH = "128" *) 
+(* T_DOUT_DATA_WIDTH = "128" *) 
 module system_util_rfifo_0_0_util_rfifo
    (din_rstn,
     din_clk,

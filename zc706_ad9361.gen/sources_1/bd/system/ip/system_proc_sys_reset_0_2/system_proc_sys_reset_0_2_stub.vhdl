@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
--- Date        : Tue Oct 14 11:45:17 2025
+-- Date        : Fri Dec  5 17:26:29 2025
 -- Host        : little running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub -rename_top system_proc_sys_reset_0_2 -prefix
---               system_proc_sys_reset_0_2_ system_proc_sys_reset_0_2_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub
+--               d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_proc_sys_reset_0_2/system_proc_sys_reset_0_2_stub.vhdl
 -- Design      : system_proc_sys_reset_0_2
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z045ffg900-2
