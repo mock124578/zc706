@@ -1,0 +1,91 @@
+/*
+ * adc_sd_logger.c
+ *
+ * 模块功能：
+ * 负责 ADC 采集并将其保存到 SD 卡。
+ */
+
+// (!!!) --- 包含所有需要的头文件 --- (!!!)
+#include "adc_sd_logger.h" // 包含我们自己的头文件
+#include "ff.h"            // SD 卡文件系统
+#include "xil_printf.h"
+#include <stdio.h>         // sprintf
+#include "adc_core.h"       // adc_init, adc_capture
+#include "parameters.h"     // ADC_DDR_BASEADDR
+#include <xil_io.h>
+#include <xil_cache.h>
+#include "qpsk_demod.h"
+// (!!!) --- SD 卡全局变量 (从 main.c 移动到这里) --- (!!!)
+// 声明为 static，意味着它们是本文件私有的
+static FATFS fatfs; // 文件系统对象
+static FIL fil;     // 文件对象
+static FRESULT Res; // 操作结果
+static UINT bw;     // 字节写入计数器
+extern struct ad9361_rf_phy *ad9361_phy;
+/**
+ * @brief (实现) 执行 ADC 采集并保存到 SD 卡
+ * (这就是从 main.c 剪切过来的函数)
+ */
+void log_adc_capture_to_sd(struct ad9361_rf_phy *phy, const char *base_filename)
+{
+    xil_printf("SD_CARD: 正在挂载 SD 卡...\n");
+    Res = f_mount(&fatfs, "0:/", 1); // 挂载 SD 卡
+    if (Res != FR_OK) {
+        xil_printf("SD 卡挂载失败: %d\n", Res);
+        return; // 挂载失败，退出函数
+    }
+
+    // --- 采集并写入多个文件 ---
+    for (int file_idx = 1; file_idx <= 3; file_idx++) {
+
+        // 动态生成文件名
+        char filename[64]; // (增加缓冲区大小以防万一)
+        sprintf(filename, "0:/%s_%d.txt", base_filename, file_idx);
+
+        Res = f_open(&fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
+        if (Res != FR_OK) {
+            xil_printf("文件打开失败: %s, 错误码 %d\n", filename, Res);
+            continue; // 失败就跳过，尝试下一个
+        }
+
+        xil_printf("ADC: 开始采集并写入 %s ...\n", filename);
+
+        // 初始化 ADC 并采集
+        adc_init(ad9361_phy);
+
+        uint32_t len = 16384;
+        uint32_t segments = 3;
+        uint32_t len1 = len * segments;
+
+        adc_capture(len1, ADC_DDR_BASEADDR);
+
+        Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,
+            ad9361_phy->pdata->rx2tx2 ? len1 * 8 : len1 * 4);
+        // (!!!!) 在这里调用解调器 (!!!!)
+                // 我们现在可以安全地访问 ADC_DDR_BASEADDR 的内容
+               xil_printf("ADC: 采集完成. 正在启动实时解调...\n");
+                qpsk_demodulate_and_print((uint32_t*)ADC_DDR_BASEADDR, len1);
+                /*****************************************/
+        xil_printf("SD_CARD: 正在写入数据...\n");
+        for(uint32_t seg = 0; seg < segments; seg++) {
+            for(uint32_t index = 0; index < len; index++) {
+                uint32_t data = Xil_In32(ADC_DDR_BASEADDR + (seg * len + index) * 4);
+                uint16_t Q1 = data & 0xFFFF;
+                uint16_t I1 = (data >> 16) & 0xFFFF;
+
+                if (Res == FR_OK) {
+                    char buf[32];
+                    int n = sprintf(buf, "%d,%d\n", (signed short)I1, (signed short)Q1);
+                    f_write(&fil, buf, n, &bw);
+                }
+            }
+        }
+
+        f_close(&fil);
+        xil_printf("SD_CARD: 文件 %s 写入完成。\n", filename);
+    }
+
+    // --- 卸载 SD 卡 ---
+    f_mount(NULL, "0:/", 1);
+    xil_printf("SD_CARD: 所有 ADC 数据文件已写入, SD 卡已卸载。\n");
+}

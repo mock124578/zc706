@@ -1,0 +1,197 @@
+// qpsk_tx.c
+#include "qpsk_tx.h"
+#include "dac_core.h"
+#include "parameters.h"
+#include "util.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <xil_cache.h>
+#include <xil_io.h>
+#include "dac_core.h"
+#include "parameters.h"
+#include "util.h"
+#include <time.h>
+// 配置参数
+#define PREAMBLE_LEN 64
+#define PAYLOAD_LEN 448
+#define TOTAL_SYMBOLS 512
+#define SAMPLES_PER_SYMBOL 8
+
+// 全局状态
+static struct {
+    bool is_initialized;
+    bool is_sending;
+    uint32_t current_frame_count;
+} tx_state;
+
+// 固定帧头
+static const uint8_t preamble_bits[PREAMBLE_LEN] = {
+    0b11, 0b00, 0b00, 0b01, 0b01, 0b11, 0b01, 0b01,
+    0b00, 0b00, 0b11, 0b11, 0b00, 0b10, 0b01, 0b00,
+    0b01, 0b00, 0b00, 0b10, 0b10, 0b01, 0b01, 0b10,
+    0b11, 0b00, 0b10, 0b00, 0b11, 0b10, 0b01, 0b01,
+    0b00, 0b10, 0b01, 0b00, 0b11, 0b01, 0b11, 0b00,
+    0b01, 0b10, 0b10, 0b01, 0b01, 0b11, 0b11, 0b10,
+    0b11, 0b10, 0b01, 0b11, 0b00, 0b00, 0b11, 0b11,
+    0b10, 0b10, 0b00, 0b10, 0b10, 0b11, 0b11, 0b01
+};
+
+// LUT表
+static const uint16_t cos_lut[8] = {0x7D0, 0x586, 0x000, 0xA7A, 0x830, 0xA7A, 0x000, 0x586};
+static const uint16_t sine_lut[8] = {0x000, 0x586, 0x7D0, 0x586, 0x000, 0xA7A, 0x830, 0xA7A};
+
+void qpsk_tx_init(void)
+{
+    if (tx_state.is_initialized) {
+        return;
+    }
+
+    // 初始化DAC和DMA
+    // 这里需要根据你的硬件初始化代码
+    // dac_init(phy, DATA_SEL_DMA, 0);
+
+    tx_state.is_initialized = true;
+    tx_state.is_sending = false;
+    tx_state.current_frame_count = 0;
+
+    printf("QPSK TX模块初始化完成\n");
+}
+
+// 将ASCII消息编码为QPSK符号
+static size_t encode_message_to_qpsk(const char* message, uint8_t* symbols, size_t max_symbols)
+{
+    size_t symbol_index = 0;
+    size_t msg_len = strlen(message);
+
+    for (size_t i = 0; i < msg_len && symbol_index < max_symbols; i++) {
+        char c = message[i];
+
+        // 每个字符编码为4个QPSK符号
+        for (int bit_pair = 0; bit_pair < 4 && symbol_index < max_symbols; bit_pair++) {
+            int bit_high = (c >> (7 - 2*bit_pair)) & 0x01;
+            int bit_low = (c >> (6 - 2*bit_pair)) & 0x01;
+            uint8_t qpsk_symbol = (bit_high << 1) | bit_low;
+            symbols[symbol_index++] = qpsk_symbol;
+        }
+    }
+
+    return symbol_index; // 返回实际使用的符号数量
+}
+
+// 构建完整帧
+static void build_frame(const uint8_t* payload_symbols, size_t payload_len, uint8_t* frame)
+{
+    // 复制帧头
+    memcpy(frame, preamble_bits, PREAMBLE_LEN);
+
+    // 复制有效载荷
+    memcpy(frame + PREAMBLE_LEN, payload_symbols, payload_len);
+
+    // 剩余部分填充0
+    if (payload_len < PAYLOAD_LEN) {
+        memset(frame + PREAMBLE_LEN + payload_len, 0, PAYLOAD_LEN - payload_len);
+    }
+}
+
+// 将符号帧写入DDR
+static void write_frame_to_ddr(const uint8_t* frame_symbols)
+{
+    uint32_t sample_idx = 0;
+
+    for (int sym = 0; sym < TOTAL_SYMBOLS; sym++) {
+        uint8_t bits = frame_symbols[sym];
+        int phase_deg;
+
+        // QPSK映射
+        switch(bits) {
+            case 0b11: phase_deg = 45; break;
+            case 0b01: phase_deg = 135; break;
+            case 0b00: phase_deg = 225; break;
+            case 0b10: phase_deg = 315; break;
+            default:   phase_deg = 0; break;
+        }
+
+        uint32_t phase_shift = (phase_deg * 8) / 360;  // 8点LUT
+
+        for (int i = 0; i < 8; i++) {
+            uint32_t index = (i + phase_shift) % 8;
+            uint32_t data_i = cos_lut[index] << 20;
+            uint32_t data_q = sine_lut[index] << 4;
+
+            Xil_Out32(DAC_DDR_BASEADDR + sample_idx * 4, data_i | data_q);
+            sample_idx++;
+        }
+    }
+
+    // 刷新缓存
+    Xil_DCacheFlush();
+}
+
+bool qpsk_tx_send_message(const char* message)
+{
+    if (!tx_state.is_initialized || tx_state.is_sending) {
+        return false;
+    }
+
+    if (message == NULL || strlen(message) == 0) {
+        printf("错误：消息为空\n");
+        return false;
+    }
+
+    // 计算最大支持的消息长度
+    size_t max_msg_len = PAYLOAD_LEN / 4;  // 每个字符4个符号
+    size_t msg_len = strlen(message);
+
+    if (msg_len > max_msg_len) {
+        printf("警告：消息过长(%zu字符)，将被截断为%zu字符\n", msg_len, max_msg_len);
+        msg_len = max_msg_len;
+    }
+
+    tx_state.is_sending = true;
+
+    // 编码消息为QPSK符号
+    uint8_t payload_symbols[PAYLOAD_LEN] = {0};
+    size_t used_symbols = encode_message_to_qpsk(message, payload_symbols, PAYLOAD_LEN);
+
+    printf("编码消息: %s\n", message);
+    printf("使用符号: %zu/%d (%.1f%%)\n", used_symbols, PAYLOAD_LEN,
+           (float)used_symbols/PAYLOAD_LEN*100);
+
+    // 构建完整帧
+    uint8_t frame_symbols[TOTAL_SYMBOLS];
+    build_frame(payload_symbols, used_symbols, frame_symbols);
+
+    // 写入DDR
+    write_frame_to_ddr(frame_symbols);
+
+    // 配置DMA并开始发送
+    uint32_t total_samples = TOTAL_SYMBOLS * 8;
+
+    dac_dma_write(AXI_DMAC_REG_CTRL, 0);
+    dac_dma_write(AXI_DMAC_REG_CTRL, AXI_DMAC_CTRL_ENABLE);
+    dac_dma_write(AXI_DMAC_REG_FLAGS, DMAC_FLAGS_CYCLIC);
+    dac_dma_write(AXI_DMAC_REG_SRC_ADDRESS, DAC_DDR_BASEADDR);
+    dac_dma_write(AXI_DMAC_REG_SRC_STRIDE, 0x0);
+    dac_dma_write(AXI_DMAC_REG_X_LENGTH, total_samples - 1);
+    dac_dma_write(AXI_DMAC_REG_Y_LENGTH, 0x0);
+    dac_dma_write(AXI_DMAC_REG_START_TRANSFER, 0x1);
+
+    tx_state.current_frame_count++;
+    printf("第%u帧发送完成\n", tx_state.current_frame_count);
+
+    tx_state.is_sending = false;
+    return true;
+}
+
+bool qpsk_tx_is_busy(void)
+{
+    return tx_state.is_sending;
+}
+
+void qpsk_tx_stop(void)
+{
+    dac_dma_write(AXI_DMAC_REG_CTRL, 0);
+    tx_state.is_sending = false;
+    printf("发送已停止\n");
+}

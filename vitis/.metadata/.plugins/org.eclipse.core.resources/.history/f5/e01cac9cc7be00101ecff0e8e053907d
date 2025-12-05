@@ -1,0 +1,393 @@
+// (!!!) 确保在 main.c 顶部包含了这些 (!!!)
+#include "ff.h"
+#include "xil_printf.h"
+#include "qpsk_tx.h"
+#include <string.h>  // (!!!) 新增: 用于 strcmp 和 strncmp
+#include <stdio.h>   // (!!!) 新N增: 用于 sscanf 解析参数
+#include "adc_sd_logger.h"
+
+/******************************************************************************/
+/***************************** Include Files **********************************/
+/******************************************************************************/
+#include "config.h"
+#include "ad9361_api.h"
+#include "parameters.h"
+#include "platform.h"
+#include "command.h"
+#include "console.h"
+#include <xil_cache.h>
+#include <xil_io.h>
+#include "adc_core.h"
+#include "dac_core.h"
+
+
+// parameters.h
+
+/******************************************************************************/
+/************************ Variables Definitions *******************************/
+/******************************************************************************/
+#ifdef CONSOLE_COMMANDS
+extern command      cmd_list[];
+extern char         cmd_no;
+extern cmd_function cmd_functions[11];
+unsigned char       cmd              =  0;
+double              param[5]         = {0, 0, 0, 0, 0};
+char                param_no         =  0;
+int                 cmd_type         = -1;
+char                invalid_cmd      =  0;
+char                received_cmd[30] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+#endif
+
+AD9361_InitParam default_init_param = {
+    /* Device selection */
+    ID_AD9361,  // dev_sel
+    /* Identification number */
+    0,      //id_no
+    /* Reference Clock */
+    40000000UL, //reference_clk_rate//
+    /* Base Configuration */
+    0,      //two_rx_two_tx_mode_enable *** adi,2rx-2tx-mode-enable使用2Rx2Tx模式 - 默认1Rx1Tx（AD9364必须清除此值）
+    1,      //one_rx_one_tx_mode_use_rx_num *** adi,1rx-1tx-mode-use-rx-num AD9361和AD9363仅在1Rx1Tx模式下有效，选择使用哪个RX通道
+    1,      //one_rx_one_tx_mode_use_tx_num *** adi,1rx-1tx-mode-use-tx-num AD9361和AD9363仅在1Rx1Tx模式下有效，选择使用哪个TX通道
+    1,      //frequency_division_duplex_mode_enable *** adi,frequency-division-duplex-mode-enable使用 FDD 模式 - 默认 TDD
+    0,      //frequency_division_duplex_independent_mode_enable *** adi,frequency-division-duplex-independent-mode-enable使用独立的FDD模式 - 允许单独控制RX和TX（仅限引脚模式）
+    0,      //tdd_use_dual_synth_mode_enable *** adi,tdd-use-dual-synth-mode-enable在 TDD 模式下，使用双合成器模式 - 默认仅启用一个合成器
+    0,      //tdd_skip_vco_cal_enable *** adi,tdd-skip-vco-cal-enable从 TX/RX 移动到 Alert 时，在 TDD 模式下跳过 VCO 校准的选项
+    0,      //tx_fastlock_delay_ns *** adi,tx-fastlock-delay-ns TX 快速锁定延迟（以 ns 为单位）
+    0,      //rx_fastlock_delay_ns *** adi,rx-fastlock-delay-ns RX 快速锁定延迟（以 ns 为单位）
+    0,      //rx_fastlock_pincontrol_enable *** adi,rx-fastlock-pincontrol-enable 这个位为1，CTRL_IN0到CTRL_IN2引脚将选择Rx快速锁定配置文件。这个位为0，寄存器Rx Fast Lock Setup （0x25A）[D7:D5]位选择快速锁定配置文件。
+    0,      //tx_fastlock_pincontrol_enable *** adi,tx-fastlock-pincontrol-enable TX 快速锁定引脚控制使能
+    0,      //external_rx_lo_enable *** adi,external-rx-lo-enable使能外部LO对Rx路
+    0,      //external_tx_lo_enable *** adi,external-tx-lo-enable使能外部LO对Tx路
+    5,      //dc_offset_tracking_update_event_mask *** adi,dc-offset-tracking-update-event-mask
+    6,      //dc_offset_attenuation_high_range *** adi,dc-offset-attenuation-high-range RX LO>4 GHz：这些位控制衰减器，用于初始化和跟踪射频直流偏移校准。
+    5,      //dc_offset_attenuation_low_range *** adi,dc-offset-attenuation-low-range RX LO<4 GHz：这些位控制衰减器，用于初始化和跟踪射频直流偏移校准。
+    0x28,   //dc_offset_count_high_range *** adi,dc-offset-count-high-range RX LO>4 GHz：这个值影响RF DC偏移初始化和跟踪，并设置集成采样数和环路增益，增加此值将增加环路增益
+    0x32,   //dc_offset_count_low_range *** adi,dc-offset-count-low-range RX LO<4 GHz：该值影响RF DC偏移初始化和跟踪，并设置集成采样数和环路增益，增加该值将增加环路增益。
+    0,      //split_gain_table_mode_enable *** adi,split-gain-table-mode-enable 使能Split增益表模式，0为Full Table模式
+    MAX_SYNTH_FREF, //trx_synthesizer_target_fref_overwrite_hz *** adi,trx-synthesizer-target-fref-overwrite-hz RF PLL 参考时钟频率 最好在10-80MHz选大的值，REF_CLK_IN为40MHz，乘2得到80MHz
+    0,      // qec_tracking_slow_mode_enable *** adi,qec-tracking-slow-mode-enable 改进的RX QEC跟踪，以防感兴趣的信号接近 DC/LO
+    /* ENSM Control */
+    0,      //ensm_enable_pin_pulse_mode_enable *** adi,ensm-enable-pin-pulse-mode-enableENSM 控制引脚 （ENABLE/TXNRX） 使用脉冲模式 - 默认电平模式
+    0,      //ensm_enable_txnrx_control_enable *** adi,ensm-enable-txnrx-control-enableENSM 控制引脚 （ENABLE/TXNRX） 控制 ENSM 状态 - 默认 SPI 写入
+    /* LO Control *///0x005
+    2400000000UL,   //rx_synthesizer_frequency_hz *** adi,rx-synthesizer-frequency-hzRX LO 上电频率（Hz）2.4ghz
+    2400000000UL,   //tx_synthesizer_frequency_hz *** adi,tx-synthesizer-frequency-hzTX LO 上电频率（以 Hz 为单位）
+    1,              //tx_lo_powerdown_managed_enable *** adi,tx-lo-powerdown-managed-enable LO断电管理使能，寄存器0x050和0x051 D4位
+    /* Rate & BW Control RX 通道 PLL 输出、*///0x002-3Rx和TX的滤波器设置
+    {983040000,491520000,245760000,122880000,61440000,30720000},// rx_path_clock_frequencies[6]  RX路径频率（Hz）adc 分频前98-adc/49-hb3/24-hb2/12-hb1/6-fir/3
+    {983040000,245760000,245760000,122880000,61440000,30720000},// tx_path_clock_frequencies[6]  TX路径频率（Hz）dac 分频前98-dac/24-hb3/24-hb2/12-hb1/6-fir/3
+    18000000,//rf_rx_bandwidth_hz *** adi,rf-rx-bandwidth-hz RX RF带宽上电设置
+    18000000,//rf_tx_bandwidth_hz *** adi,rf-tx-bandwidth-hz TX RF带宽上电设置
+    /* RF Port Control 0x004*/                //0x004
+    0,      //rx_rf_port_input_select *** adi,rx-rf-port-input-select 射频端口输入选择
+    0,      //tx_rf_port_input_select *** adi,tx-rf-port-input-select 射频端口输出选择
+    /* TX Attenuation Control */
+    5000,   //tx_attenuation_mdB *** adi,tx-attenuation-mdB TX加电衰减（毫分贝），10dB
+    0,      //update_tx_gain_in_alert_enable *** adi,update-tx-gain-in-alert-enable为1时，在TDD模式下，禁用即时TX增益更新，直到ENSM移到 Alert 状态
+    /* Reference Clock Control */
+    0,      //xo_disable_use_ext_refclk_enable *** adi,xo-disable-use-ext-refclk-enable 为1时，禁用XO 使用 外部时钟 到 XTAL_N
+    {8, 5920},  //dcxo_coarse_and_fine_tune[2] *** adi,dcxo-coarse-and-fine-tune  DCXO精调和粗调0x293和0x294
+    CLKOUT_DISABLE, //clk_output_mode_select *** adi,clk-output-mode-select  CLKOUT模式选择
+    /* Gain Control */
+    0,      //gc_rx1_mode *** RX1增益控制模式：手动增益（0）；Fast AGC（1）；Slow AGC（2）；Hybrid AGC（3）
+    0,      //gc_rx2_mode *** RX2增益控制模式：手动增益（0）；Fast AGC（1）；Slow AGC（2）；Hybrid AGC（3）
+    58,     //gc_adc_large_overload_thresh ***设置 large ADC overload，寄存器0x105
+    4,      //gc_adc_ovr_sample_size *** adi,gc-adc-ovr-sample-size 设置 large ADC overload，寄存器0x105
+    47,     //gc_adc_small_overload_thresh *** adi,gc-adc-small-overload-thresh 设置 small ADC overload，寄存器0x104
+    8192,   //gc_dec_pow_measurement_duration *** adi,gc-dec-pow-measurement-duration 增益控制算法使用的功率测量持续时间。见寄存器0x15C，位[D3:D0]
+    0,      //gc_dig_gain_enable *** adi,gc-dig-gain-enable 为1时，在split 表模式下启用数字增益指针。参见寄存器0x0FB，位D2，0不使用数字增益
+    800,    //gc_lmt_overload_high_thresh 设置large LMT过载阈值。见寄存器0x108
+    704,    //gc_lmt_overload_low_thresh设置small LMT过载阈值。见寄存器0x107。
+    24,     //gc_low_power_thresh -24 dBFS, 范围为0 dBFS至-63.5 dBFS。fast AGC使用该阈值来确定是否应该增加增益。这个阈值也可以用来触发MGC模式下的CTRL\_OUT信号转换。见寄存器0x114，位[D6:D0]。
+    15,     //gc_max_dig_gain *** adi,gc-max-dig-gain设置最大允许数字增益，适用于所有增益控制模式，见寄存器0x100的位[D4：D0]。
+    /* Gain MGC Control */
+    2, //mgc_dec_gain_step， 在CTRL_IN信号控制增益时，当某些CTRL_IN信号跳变为高电平时，增益索引减小此值。参见寄存器0x0FE的位[D7：D5]。
+    2, //mgc_inc_gain_step ，在CTRL_IN信号控制增益时，当某些CTRL_IN信号跳变为高电平时，增益索引增加此值。参见寄存器0x0FC的位[D7：D5]。
+    0, //mgc_rx1_ctrl_inp_enable ，为0时，SPI写操作更改RX1增益。为1时，CTRL\_IN引脚将控制增益。参见寄存器0x0FB的位[D0]。
+    0, //mgc_rx2_ctrl_inp_enable ，为0时，SPI写操作更改RX2增益。为1时，CTRL\_IN引脚将控制增益。参见寄存器0x0FB的位[D1]。
+    0, //mgc_split\_table_ctrl_inp_gain_mode ，MGC模式， CTLR_IN 信号控制， split表模式下，AGC确定增益变化（0）；仅LPF增益变化（1）；仅LMT增益变化（2）。参见寄存器0x0FC的位[D4\]，[D3]。
+    /* Gain AGC Control */
+    10,     //agc_adc_large_overload_exceed_counter r该计数器指定 large ADC过载发生次数，发生的过载次数超过该值后，减小设定的增益步长。参见寄存器0x122的位[D7：D:4]。
+    2,      //agc_adc_large_overload_inc_steps 用于AGC，决定 split 表模式下的 large LPF过载或全表模式下的large LMT和large ADC 过载的增益变化量。参见寄存器0x106的位[D3：D0]（名称具有误导性，应为dec-steps）
+    0,      //agc_adc_lmt_small_overload_prevent_gain_inc_enable 为1时，如果发生 small LMT或small ADC 过载，防止增益增加。参见寄存器0x120的位[D7]。
+    10,     //agc_adc_small_overload_exceed_counter该计数器指定 small ADC过载发生次数，发生的过载次数超过该值后，减小设定的增益步长。参见寄存器0x122的位[D3：D0]。
+    4,      //agc_dig_gain_step_size如果发生digital saturation，数字增益将降低此值。参见寄存器0x100的位[D7：D5]。
+    3,      //agc_dig_saturation_exceed_counter该计数器指定digital saturation事件发生次数，发生的次数超过该值后，减小设定的增益步长。参见寄存器0x128的位[D3：D0]。
+    1000,   // agc_gain_update_interval_us 增益更新计数器配置为1000 us
+    0,      //agc_immed_gain_change_if_large_adc_overload_enable设为1时，large ADC过载立即降低增益，忽略增益更新计数器。参见寄存器0x123的D3位。
+    0,      //agc_immed_gain_change_if_large_lmt_overload_enable设为1时，large LMT过载立即降低增益，忽略增益更新计数器。参见寄存器0x123的D7位。
+    10,     //agc_inner_thresh_high  slow AGC 控制环路 inner threshold high： -10 dBFS
+    1,      //agc_inner_thresh_high_dec_steps超过inner threshold high后，增益减少步长
+    12,     //agc_inner_thresh_low   slow AGC 控制环路 inner threshold low： -12dBFS
+    1,      //agc_inner_thresh_low_inc_steps低于inner threshold low后，增益增加步长
+    10,     //agc_lmt_overload_large_exceed_counter 该计数器指定 large LMT过载发生次数，发生的过载次数超过该值后，减小设定的增益步长。参见寄存器0x121的位\[D7：D:4\]。
+    2,      //agc_lmt_overload_large_inc_steps 确定split 表模式下large LMT的增益变化或full 表模式下small ADC过载的增益变化。参见寄存器0x103的位\[D4：D2\]。
+    10,     //agc_lmt_overload_small_exceed_counter 该计数器指定 small LMT过载发生次数，配合其他寄存器，可以防止增益增加。参见寄存器0x121的位\[D3：D0\]。
+    5, //agc_outer_thresh_high ，slow AGC 控制环路 outer threshold high： -5 dBFS
+    2, //agc_outer_thresh_high\_dec\_steps ，超过outer threshold high后，增益减少步长
+    18, //agc_outer_thresh_low，slow AGC 控制环路 outer threshold low： -18 dBFS
+    2, //agc_outer_thresh_low_inc_steps ，低于outer threshold low后，增益增加步长
+    1,      //agc_attack_delay_extra_margin_us; AGC Attack Delay可防止AGC在接收路径建立之前开始其算法，使接收路径在AGC启动之前稳定。当ENSM进入Rx状态时，延迟计数器启动，范围：0-31微秒。参见寄存器0x022的位\[D5：D0\]。
+    0,      //agc_sync_for_gain_counter_enable1时，则CTRL\_IN2转换为高电平会将增益更新计数器复位，参见寄存器0x128的D4位。
+    /* Fast AGC */
+    64, //fagc_dec_pow_measuremnt_duration ，增益控制算法使用的功率测量持续时间。参见寄存器0x15C的位[D3：D0]。
+    260, //fagc_state_wait_time_ns，Energy Detect Count 配置为260 ns ，4个 Rx samples， 如果该时段没有检测到峰值过载，fast AGC可以从状态1进入状态2。Energy Detect Count 以ClkRF时钟频率(Rx FIR滤波器输入端使用的时钟)计时，参见寄存器0x117的位\[D4：D0\]。
+    /* Fast AGC - Low Power */
+    0, //fagc_allow_agc_gain_increase ，为1时 Enable Incr Gain 位为1，如果平均信号功率低于低功率阈值的时间大于增量时间，进入State 2A， AGC 增加增益。 后续我们不使用Enable Incr Gain 位，配0。参见寄存器0x110的D0位。
+    5, //fagc_lp_thresh_increment_time ，增量时间 5 Rx samples ：fast AGC改变增益之前信号功率必须保持在低功率阈值以下的时间。也可以由MGC使用。参见寄存器0x11B的位[D7：D0]。
+    1, //fagc_lp_thresh_increment_steps ，如果信号功率降低到“低功率阈值”以下，并且仅在启用“Enable Incr Gain ”的情况下，快速AGC才会将增益索引增加此步长值。参见寄存器0x117的位[D7：D5]。
+    /* Fast AGC - Lock Level (Lock Level is set via slow AGC inner high threshold) */
+    1,      //fagc_lock_level_lmt_gain_increase_en0x111 D6
+    5,      //fagc_lock_level_gain_increase_upper_limit 0x118 d5-d0
+    /* Fast AGC - Peak Detectors and Final Settling */
+    1,      //fagc_lpf_final_settling_steps 0x112 d7-d6
+    1,      //fagc_lmt_final_settling_steps 0x113 d7-d6
+    3,      //fagc_final_overrange_count 0x116 d7-d5
+    /* Fast AGC - Final Power Test */
+    0,      //fagc_gain_increase_after_gain_lock_en  0x110 d7
+    /* Fast AGC - Unlocking the Gain */
+    0,      //fagc_gain_index_type_after_exit_rx_mode AD9361退出Rx State， AGC将增益重置为：MAX Gain （0）; Optimized Gain（1）; Set Gain（2）。参见寄存器0x110的D4，D2位
+    1,      //fagc_use_last_lock_level_for_set_gain_en 配置1时，将前一帧的最后的增益索引用于Set Gain。0时使用上一帧的第一个增益索引。参见寄存器0x111的D7位
+    1,      //fagc_rst_gla_stronger_sig_thresh_exceeded_en为1时，并且fast AGC处于状态5，则信号功率增加的幅度超过“Stronger Signal Threshold”，增益解锁。参见寄存器0x115的D7位c
+    5,      //fagc_optimized_gain_offset 为1时，并且fast AGC处于状态5，则信号功率增加的幅度超过“Stronger Signal Threshold”，增益解锁。参见寄存器0x115的D7位
+    10,     //fagc_rst_gla_stronger_sig_thresh_above_ll 0x113 d5-d0
+    1,      //fagc_rst_gla_engergy_lost_sig_thresh_exceeded_en 0x110 d3
+    1,      //fagc_rst_gla_engergy_lost_goto_optim_gain_en 0x110 d6
+    10,     //fagc_rst_gla_engergy_lost_sig_thresh_below_ll 0x112 d5-d0
+    8,      //fagc_energy_lost_stronger_sig_gain_lock_exit_cnt0x119 d5-d0
+    1,      //fagc_rst_gla_large_adc_overload_en 0x114 d7
+    1,      //fagc_rst_gla_large_lmt_overload_en0x110 d1
+    0,      //fagc_rst_gla_en_agc_pulled_high_en
+    0,      //fagc_rst_gla_if_en_agc_pulled_high_mode EN_AGC 拉高电平，增益将解锁，AGC算法将重新启动，增益索引：MAX Gain（0）; Optimized Gain（1）; Set Gain（2），不改变增益。参见寄存器0x110、0x111
+    64,     //fagc_power_measurement_duration_in_state5功率测量持续时间，用在fast AGC 状态5（增益锁定）增益控制算法。参见寄存器0x109的位D7和0x10a的位[D7：D5]。
+    /* RSSI Control */
+    1,      //rssi_delay *** adi,rssi-delay1微秒，RSSI Delay，时钟频率为接收采样速率（Rx sample rate）8分频， 范围0到2040个 Rx samples
+    1000,   //rssi_duration *** adi,rssi-duration1000微秒，RSSI Duration 测量持续时间
+    3,      //rssi_restart_mode *** adi,rssi-restart-mode 3，模式选择Gain change occurs
+    0,      //rssi_unit_is_rx_samples_enable *** adi,rssi-unit-is-rx-samples-enable 0时，RSSI单位是微秒，1时单位是rx_samples
+    1,      //rssi_wait *** adi,rssi-wait1微秒，RSSI Wait，时钟频率为接收采样速率4分频， 范围0到1020个 Rx samples
+    /* Aux ADC Control */
+    256,    //aux_adc_decimation *** adi,aux-adc-decimation 设置AuxADC抽取，参见寄存器0x01D位[D3：D1]
+    40000000UL, //aux_adc_rate *** adi,aux-adc-rate将AuxADC时钟频率设置为40000000Hz。参见寄存器0x01C的位[D5：D0]。
+    /* AuxDAC Control */
+    1, //aux_dac_manual_mode_enable ，为1时，将 AuxDAC 设置为手动操作，也可以设置为在TDD 操作期间自动切换，以减少对 BBP 的控制要求
+    0, //aux_dac1_default_value_mV，DAC1默认电压（mV）
+    0, //aux_dac1_active_in_rx_enable，如果使能，DAC1在RX模式下处于活动状态
+    0, //aux_dac1_active_in_tx_enable ，如果使能，DAC1在TX模式下处于活动状态
+    0, //aux_dac1_active_in_alert_enable ，如果使能，DAC1在alert模式下处于活动状态
+    0, //aux_dac1_rx_delay_us ，RX 延时（us）
+    0, //aux_dac1_tx_delay_us ，TX 延时（us）
+    0, //aux_dac2_default_value_mV， DAC2默认电压（mV）
+    0, //aux_dac2_active_in_rx_enable ，如果使能，DAC2在RX模式下处于活动状态
+    0, //aux_dac2_active_in_tx_enable ，如果使能，DAC2在TX模式下处于活动状态
+    0, //aux_dac2_active_in_alert_enable ，如果使能，DAC2在alert模式下处于活动状态
+    0, //aux_dac2_rx_delay_us ，RX 延时（us）
+    0, //aux_dac2_tx_delay_us ，T X 延时（us）
+    /* Temperature Sensor Control */
+    256, //temp_sense_decimation ，用于导出温度的AuxADC的抽取。
+    1000, //temp_sense_measurement_interval_ms ，测量间隔（以毫秒为单位）。
+    0xCE, //temp_sense_offset_signed ，偏移度为有符号 deg.C，范围-128…127
+    1, //temp_sense_periodic_measurement_enable ，启用定期测量
+    /* Control Out Setup */
+    0xFF,   //ctrl_outs_enable_mask *** adi,ctrl-outs-enable-mask
+    0,      //ctrl_outs_index *** adi,ctrl-outs-index 0-31
+    /* External LNA Control */
+    0,      //elna_settling_delay_ns 外部LNA的建立延迟（ns）
+    0,      //elna_gain_mdB *** adi,elna-gain-mdB
+    0,      //elna_bypass_loss_mdB *** adi,elna-bypass-loss-mdB
+    0,      //elna_rx1_gpo0_control_enable *** adi,elna-rx1-gpo0-control-enable
+    0,      //elna_rx2_gpo1_control_enable *** adi,elna-rx2-gpo1-control-enable
+    0,      //elna_gaintable_all_index_enable *** adi,elna-gaintable-all-index-enable
+    /* Digital Interface Control */
+    0,      //digital_interface_tune_skip_mode 跳过数字接口tune，0 =不跳过，1 =跳过TX tuning，2 =跳过RX 和TX并使用rx-data-clock-delay，rx-data-delay，tx-fb-clock -delay，tx-data-delay代替
+    0,      //digital_interface_tune_fir_disable FIR滤波器一旦启用，接口时序就会改变。如果时间间隔足够大，这通常不是问题。但是，在61.44 MSPS时，它会在某些系统上引起问题。一般在滤波器启用的情况下运行digital tune 。
+    //0x010 reg
+    1,      //pp_tx_swap_enable *** adi,pp-tx-swap-enable 清除此位交换，1不交换
+    1,      //pp_rx_swap_enable *** adi,pp-rx-swap-enable
+    0,      //tx_channel_swap_enable *** adi,tx-channel-swap-enable设置为1交换，0不交换
+    0,      //rx_channel_swap_enable *** adi,rx-channel-swap-enable
+    1,      //rx_frame_pulse_mode_enable  rx帧脉冲模式AD9361输出一个Rx帧同步信号，指示Rx帧的开始。当此位清除时，Rx帧在第一个有效接收样本时同时变高，并在接收器启用期间保持高电平。当此位设置时，Rx帧信号以50%的占空比翻转。
+    0,      //two_t_two_r_timing_enable *** adi,2t2r-timing-enable 2r2t时序
+    0,      //invert_data_bus_enable *** adi,invert-data-bus-enable 反转数据总线
+    0,      //invert_data_clk_enable *** adi,invert-data-clk-enable 反转数据时钟
+    //0x011
+    0,      //fdd_alt_word_order_enable *** adi,fdd-alt-word-order-enable FDD交替字序
+    0,      //invert_rx_frame_enable *** adi,invert-rx-frame-enable反转RX帧
+    //0x012
+    0,      //fdd_rx_rate_2tx_enable  rx速率为tx的两倍
+    0,      //swap_ports_enable *** adi,swap-ports-enable交换端口
+    0,      //single_data_rate_enable *** adi,single-data-rate-enable单数据速率
+    1,      //lvds_mode_enable *** adi,lvds-mode-enable 1为LVDS模式，0为COMS
+    0,      //half_duplex_mode_enable *** adi,half-duplex-mode-enable半双工模式
+    0,      //single_port_mode_enable *** adi,single-port-mode-enable单端口模式
+    0,      //full_port_enable *** adi,full-port-enable全端口
+    0,      //full_duplex_swap_bits_enable *** adi,full-duplex-swap-bits-enable全双工交换位
+    0,      //delay_rx_data *** adi,delay-rx-data延迟rx数据
+    //0x006
+    0,      //rx_data_clock_delay *** adi,rx-data-clock-delay
+    4,      //rx_data_delay *** adi,rx-data-delay
+    //0x007
+    7,      //tx_fb_clock_delay *** adi,tx-fb-clock-delay
+    0,      //tx_data_delay *** adi,tx-data-delay
+    //
+    150,    //lvds_bias_mV *** adi,lvds-bias-mV LVDS驱动器幅度控制。VOD = 75 mV to 450 mV
+    1,      //lvds_rx_onchip_termination_enable 对所有数据路径比特、Tx\_FRAME和FB\_CLK使用LVDS Rx100片内匹配。CMOS模式下不能将该位置1
+    0,      //rx1rx2_phase_inversion_en *** adi,rx1-rx2-phase-inversion-enable不使能，Rx1和Rx2相位相差180度。使能，Rx1和Rx2同相
+    0xFF,   //lvds_invert1_control *** adi,lvds-invert1-control
+    0x0F,   //lvds_invert2_control *** 通过设置这两个寄存器中的位，可以将任何LVDS对的相位从默认配置反转过来(见下表)。数据位的默认配置反相的。设置lvds-invert1-control = 0xFF和lvds-invert2-control = 0x0F来防止数据反相。时钟和帧信号在默认情况下不反相
+    /* GPO Control */
+    0,      //gpo0_inactive_state_high_enable *** adi,gpo0-inactive-state-high-enable
+    0,      //gpo1_inactive_state_high_enable *** adi,gpo1-inactive-state-high-enable
+    0,      //gpo2_inactive_state_high_enable *** adi,gpo2-inactive-state-high-enable
+    0,      //gpo3_inactive_state_high_enable *** adi,gpo3-inactive-state-high-enable
+    0,      //gpo0_slave_rx_enable *** adi,gpo0-slave-rx-enable
+    0,      //gpo0_slave_tx_enable *** adi,gpo0-slave-tx-enable
+    0,      //gpo1_slave_rx_enable *** adi,gpo1-slave-rx-enable
+    0,      //gpo1_slave_tx_enable *** adi,gpo1-slave-tx-enable
+    0,      //gpo2_slave_rx_enable *** adi,gpo2-slave-rx-enable
+    0,      //gpo2_slave_tx_enable *** adi,gpo2-slave-tx-enable
+    0,      //gpo3_slave_rx_enable *** adi,gpo3-slave-rx-enable  1时，当ENSM进入RX状态时，GPO引脚更改状态
+    0,      //gpo3_slave_tx_enable *** adi,gpo3-slave-tx-enable  1时，当ENSM进入TX状态时，GPO引脚更改状态
+    0,      //gpo0_rx_delay_us *** adi,gpo0-rx-delay-us
+    0,      //gpo0_tx_delay_us *** adi,gpo0-tx-delay-us
+    0,      //gpo1_rx_delay_us *** adi,gpo1-rx-delay-us
+    0,      //gpo1_tx_delay_us *** adi,gpo1-tx-delay-us
+    0,      //gpo2_rx_delay_us *** adi,gpo2-rx-delay-us
+    0,      //gpo2_tx_delay_us *** adi,gpo2-tx-delay-us
+    0,      //gpo3_rx_delay_us *** adi,gpo3-rx-delay-us设置从 Alert 状态转移到RX的延迟为GPO改变逻辑电平的时间。1us / LSB，范围从0到255 us。
+    0,      //gpo3_tx_delay_us *** adi,gpo3-tx-delay-us设置从 Alert 状态转移到TX的延迟为GPO改变逻辑电平的时间。1us / LSB，范围从0到255 us。
+    /* Tx Monitor Control */
+    37000,  //low_high_gain_threshold_mdB37dB，TPM增益模式，低或高增益索引由 Tx Atten Threshold寄存器(寄存器0x078 [D7:D0])中的阈值决定。如果Tx Attenuation(寄存器0x073和寄存器0x074)等于或小于阈值，则使用低增益索引值，如果该值大于阈值，则在接收路径中使用高增益索引值。
+    0,      //low_gain_dB *** adi,txmon-low-gain接收低通滤波器增益GBBF由寄存器Tx Mon Low Gain 和 Tx Mon High Gain 设置(寄存器0x067 [D4:D0]和寄存器0x068 [D4:D0])。
+    24,     //high_gain_dB *** adi,txmon-high-gain接收低通滤波器增益GBBF由寄存器Tx Mon Low Gain 和 Tx Mon High Gain 设置(寄存器0x067 [D4:D0]和寄存器0x068 [D4:D0])。
+    0,      //tx_mon_track_en *** adi,txmon-dc-tracking-enable为了最大化SNR， 0x067[D5] Tx Mon Track位可以设置为1，以最小化Tx monitor 信号路径中的DC偏移。
+    0,      //one_shot_mode_en *** adi,txmon-one-shot-mode-enable必须是0，TPM Mode Enable，0x06E D[6]
+    511,    //tx_mon_delay *** adi,txmon-delay ENSM进入发送状态后，如果0x06A\[D7:D2\]中的Tx Level Threshold= 0，Tx Mon Delay Counter启动。如果0x06A[D7:D2]非零，AD9361将I和Q样本的 6 MSBs与0x06A[D7:D2进行比较。如果超过0x06AD7:D2，Tx Mon Delay Counter 启动。到期后，AD9361测量发射RSSI。分辨率为 64 × ADC clocks/LSB
+    8192,   //tx_mon_duration *** adi,txmon-duration 该寄存器根据下式指定发射RSSI测量的持续时间。
+    2,      //tx1_mon_front_end_gain *** adi,txmon-1-front-end-gain//00 open/01 0db/10 6db/11 9.5db
+    2,      //tx2_mon_front_end_gain *** adi,txmon-2-front-end-gainTPM前端增益如下表
+    48,     //tx1_mon_lo_cm *** adi,txmon-1-lo-cm必须6’b110000
+    48,     //tx2_mon_lo_cm *** adi,txmon-2-lo-cm必须6’b110000
+    /* GPIO definitions */
+    -1,     //gpio_resetb *** reset-gpios复位引脚，输出，初始化时赋值为GPIO_RESET_PIN
+    /* MCS Sync */
+    -1,     //gpio_sync *** sync-gpios
+    -1,     //gpio_cal_sw1 *** cal-sw1-gpios
+    -1,     //gpio_cal_sw2 *** cal-sw2-gpios
+    /* External LO clocks *///复位引脚，输出，初始化时赋值为GPIO\_RESET\_PIN
+    NULL,   //(*ad9361_rfpll_ext_recalc_rate)()
+    NULL,   //(*ad9361_rfpll_ext_round_rate)()
+    NULL    //(*ad9361_rfpll_ext_set_rate)()
+};
+//TR20,30.72
+AD9361_RXFIRConfig rx_fir_config = {
+    3, // rx
+    -6, // rx_gain
+    2, // rx_dec
+    {-12,-15,-22,-8,9,28,24,1,-28,-31,-2,42,57,21,-43,-76,-38,50,109,73,-44,-138,-111,36,177,169,-10,-210,-235,-26,247,321,86,-273,-419,-167,294,538,283,-297,-673,-434,280,832,641,-228,-1016,-916,130,1239,1302,48,-1522,-1873,-362,1926,2834,986,-2643,-4912,-2652,4728,14235,20875,20875,14235,4728,-2652,-4912,-2643,986,2834,1926,-362,-1873,-1522,48,1302,1239,130,-916,-1016,-228,641,832,280,-434,-673,-297,283,538,294,-167,-419,-273,86,321,247,-26,-235,-210,-10,169,177,36,-111,-138,-44,73,109,50,-38,-76,-43,21,57,42,-2,-31,-28,1,24,28,9,-8,-22,-15,-12}, // rx_coef[128]
+    128, // rx_coef_size
+    {983040000,491520000,245760000,122880000,61440000,30720000}, // rx_path_clks[6]
+    22132016 // rx_bandwidth
+};
+
+AD9361_TXFIRConfig tx_fir_config = {
+    3, // tx
+    0, // tx_gain
+    2, // tx_int
+    {-3,1,8,25,37,38,16,-15,-36,-25,12,47,43,-4,-58,-68,-12,68,99,38,-74,-136,-76,72,177,127,-59,-220,-193,31,264,276,17,-303,-376,-89,334,496,193,-351,-636,-336,347,798,530,-312,-988,-795,230,1215,1166,-74,-1502,-1715,-212,1908,2634,779,-2633,-4621,-2273,4870,13936,20231,20231,13936,4870,-2273,-4621,-2633,779,2634,1908,-212,-1715,-1502,-74,1166,1215,230,-795,-988,-312,530,798,347,-336,-636,-351,193,496,334,-89,-376,-303,17,276,264,31,-193,-220,-59,127,177,72,-76,-136,-74,38,99,68,-12,-68,-58,-4,43,47,12,-25,-36,-15,16,38,37,25,8,1,-3}, // tx_coef[128]
+    128, // tx_coef_size
+    {983040000,245760000,245760000,122880000,61440000,30720000}, // tx_path_clks[6]
+    22593011 // tx_bandwidth
+};
+struct ad9361_rf_phy *ad9361_phy;
+
+
+/***************************************************************************//**
+ * @brief main
+*******************************************************************************/
+int main(void)
+{
+     Xil_ICacheEnable();
+     Xil_DCacheEnable();
+
+     // 初始化 AD9361 和 DAC/ADC
+     default_init_param.gpio_resetb = GPIO_RESET_PIN;
+     gpio_init(GPIO_DEVICE_ID);
+     spi_init(SPI_DEVICE_ID, 1, 0);
+     gpio_direction(default_init_param.gpio_resetb, 1);
+     gpio_set_value(default_init_param.gpio_resetb, 0);
+     mdelay(20);
+     gpio_set_value(default_init_param.gpio_resetb, 1);
+     mdelay(10);
+
+     int32_t ret = ad9361_init(&ad9361_phy, &default_init_param);
+     if (ret != 0) {
+         printf("AD9361 init failed: %d\n", (int) ret);
+         return -1;
+     }
+     xil_printf("AD9361 初始化完成。\n");
+     ad9361_set_tx_fir_config(ad9361_phy, tx_fir_config);
+     ad9361_set_rx_fir_config(ad9361_phy, rx_fir_config);
+
+//   ad9361_do_calib(ad9361_phy, TX_QUAD_CAL, 0);
+//   ad9361_do_calib(ad9361_phy, RFDC_CAL, 0);
+
+
+     dac_init(ad9361_phy, DATA_SEL_DMA, 1);
+     mdelay(500);
+     dac_start_sync(ad9361_phy, 1);
+     mdelay(100);
+     xil_printf("DAC 正在循环发送默认信号。\n");
+     // (!!!) --- 这是你 main() 函数末尾需要修改的部分 --- (!!!)
+     // ( ... dac_init() 等代码之后 ... )
+
+#ifdef CONSOLE_COMMANDS
+    // 打印帮助菜单
+    get_help(NULL, 0);
+
+    xil_printf("\n--- QPSK 混合模式已启用 ---\n");
+    xil_printf("  输入任何 '未知' 文本 (例如 'hello') 将作为 QPSK 消息发送。\n");
+    xil_printf("----------------------------------------\n");
+
+    // 紧急调试：显示命令表状态
+    xil_printf("紧急调试: 命令表大小 = %d\n", cmd_no);
+    xil_printf("紧急调试: 命令表地址 = %p\n", cmd_list);
+    for(int i = 0; i < cmd_no; i++) {
+        xil_printf("命令[%d]: '%s' -> 函数地址: %p\n",
+                   i, cmd_list[i].name, cmd_list[i].function);
+    }
+    xil_printf("----------------------------------------\n");
+
+    while(1)
+    {
+        console_get_command(received_cmd);
+
+        int command_found = 0;
+
+        for(cmd = 0; cmd < cmd_no; cmd++)
+        {
+            param_no = 0;
+            cmd_type = console_check_commands(received_cmd, cmd_list[cmd].name,
+                                              param, &param_no);
+
+            if(cmd_type != UNKNOWN_CMD)
+            {
+                cmd_list[cmd].function(param, param_no);
+                command_found = 1;
+                break;
+            }
+        }
+
+        if(!command_found)
+        {
+            xil_printf("命令: 收到未知命令, 尝试作为 QPSK 消息发送...\n");
+            qpsk_tx_update_frame(ad9361_phy, received_cmd);
+        }
+
+        xil_printf("\n> ");
+    }
+#endif
+     }

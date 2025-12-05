@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Oct  8 01:47:29 2025
+# Process ID: 8360
+# Current directory: G:/DAS_AD9361_21/hdl-hdl_2021_r2/library/axi_ad9361
+# Command line: vivado.exe -mode batch -source axi_ad9361_ip.tcl
+# Log file: G:/DAS_AD9361_21/hdl-hdl_2021_r2/library/axi_ad9361/vivado.log
+# Journal file: G:/DAS_AD9361_21/hdl-hdl_2021_r2/library/axi_ad9361\vivado.jou
+# Running On: wgq, OS: Windows, CPU Frequency: 3110 MHz, CPU Physical cores: 12, Host memory: 34070 MB
+#-----------------------------------------------------------
+source axi_ad9361_ip.tcl

@@ -1,0 +1,62 @@
+/*
+ * qpsk_demod.h
+ *
+ * 接口文件，用于将 MATLAB QPSK 解调脚本移植到 C 语言。
+ * 定义了所有常量、复数类型和公共函数。
+ */
+
+#ifndef QPSK_DEMOD_H_
+#define QPSK_DEMOD_H_
+
+#include <stdint.h>
+
+// === 1. 参数定义 (来自 MATLAB Section 1) ===
+
+#define SAMPLES_PER_SYMBOL 8
+#define PREAMBLE_LEN_SYMS 64
+#define PAYLOAD_LEN_SYMS 448
+#define FRAME_LEN_SYMS (PREAMBLE_LEN_SYMS + PAYLOAD_LEN_SYMS)
+#define FRAME_LEN_SAMPLES (FRAME_LEN_SYMS * SAMPLES_PER_SYMBOL) // 512 * 8 = 4096
+
+// 定义一个合理的 ADC 采集长度（用于我们的缓冲区）
+// 你的 logger 使用了 16384 * 3 = 49152。我们就用这个。
+#define MAX_CAPTURE_SAMPLES 49152
+// xcorr 输出长度会加倍，所以缓冲区需要更大
+#define MAX_CORR_LEN (MAX_CAPTURE_SAMPLES + FRAME_LEN_SAMPLES)
+
+// === 自定义复数类型 ===
+
+// 在 C 语言中，我们需要一个结构体来表示复数
+typedef struct {
+    float i; // 对应 MATLAB 的 real()
+    float q; // 对应 MATLAB 的 imag()
+} complex_float;
+
+
+// === 公共函数 API ===
+
+/**
+ * @brief (!!!!) 必须在 main() 函数开头调用一次 (!!!!)
+ *
+ * 预先计算 `preamble_syms_ideal` 和 `matched_filter_template` 的 C 语言版本。
+ * (对应 MATLAB Section 1 的末尾)
+ */
+void qpsk_demod_init(void);
+
+
+/**
+ * @brief (!!!!) 这是你的主解调函数 (!!!!)
+ *
+ * 运行完整的 QPSK 解调流程 (对应 MATLAB Section 2 到 12)。
+ * 它会从 ADC 缓冲区读取，执行所有解调步骤，并
+ * 将找到的 ASCII 消息打印到 Vitis 控制台。
+ *
+ * @param adc_data_ptr   指向 ADC DMA 内存 (ADC_DDR_BASEADDR) 的指针。
+ * @param capture_len    本次 ADC 捕获的样本总数 (例如 49152)。
+ *
+ * @return 0 表示成功找到至少一帧, -1 表示未找到帧或出错。
+ */
+int qpsk_demodulate_and_print(uint32_t* adc_data_ptr, uint32_t capture_len);
+
+
+#endif // QPSK_DEMOD_H_

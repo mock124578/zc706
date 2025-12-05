@@ -1,0 +1,27 @@
+// qpsk_mapper.h
+#ifndef QPSK_MAPPER_H
+#define QPSK_MAPPER_H
+
+#include <stdint.h>
+#include <math.h>
+
+// QPSK 映射配置
+typedef struct {
+    float phase_45_deg;   // 45度对应 "11"
+    float phase_135_deg;  // 135度对应 "01"
+    float phase_225_deg;  // 225度对应 "00"
+    float phase_315_deg;  // 315度对应 "10"
+} qpsk_config_t;
+
+// 复数结构体
+typedef struct {
+    float real;
+    float imag;
+} complex_t;
+
+// 函数声明
+void qpsk_mapper_init(qpsk_config_t* config);
+void qpsk_symbol_to_bits(complex_t symbol, uint8_t* bit1, uint8_t* bit2);
+const char* qpsk_bits_to_string(uint8_t bit1, uint8_t bit2);
+
+#endif

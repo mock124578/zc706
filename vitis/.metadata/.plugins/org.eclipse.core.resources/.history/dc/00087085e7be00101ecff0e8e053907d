@@ -1,0 +1,50 @@
+// qpsk_mapper.c
+#include "qpsk_mapper.h"
+
+static qpsk_config_t g_config;
+
+// 初始化 QPSK 映射配置
+void qpsk_mapper_init(qpsk_config_t* config) {
+    if(config != NULL) {
+        g_config = *config;
+    } else {
+        // 默认配置：Gray 编码
+        g_config.phase_45_deg = 45.0f;
+        g_config.phase_135_deg = 135.0f;
+        g_config.phase_225_deg = 225.0f;
+        g_config.phase_315_deg = 315.0f;
+    }
+}
+
+// QPSK 符号到比特映射
+void qpsk_symbol_to_bits(complex_t symbol, uint8_t* bit1, uint8_t* bit2) {
+    // 计算相位角（度）
+    float phase = atan2f(symbol.imag, symbol.real) * 180.0f / M_PI;
+    if(phase < 0) phase += 360.0f;
+
+    // QPSK 判决（最近邻）
+    float diff_45 = fabsf(phase - g_config.phase_45_deg);
+    float diff_135 = fabsf(phase - g_config.phase_135_deg);
+    float diff_225 = fabsf(phase - g_config.phase_225_deg);
+    float diff_315 = fabsf(phase - g_config.phase_315_deg);
+
+    // 找到最接近的相位
+    if(diff_45 <= diff_135 && diff_45 <= diff_225 && diff_45 <= diff_315) {
+        *bit1 = 1; *bit2 = 1;  // "11"
+    } else if(diff_135 <= diff_45 && diff_135 <= diff_225 && diff_135 <= diff_315) {
+        *bit1 = 0; *bit2 = 1;  // "01"
+    } else if(diff_225 <= diff_45 && diff_225 <= diff_135 && diff_225 <= diff_315) {
+        *bit1 = 0; *bit2 = 0;  // "00"
+    } else {
+        *bit1 = 1; *bit2 = 0;  // "10"
+    }
+}
+
+// 比特到字符串转换（用于调试）
+const char* qpsk_bits_to_string(uint8_t bit1, uint8_t bit2) {
+    if(bit1 == 1 && bit2 == 1) return "11";
+    if(bit1 == 0 && bit2 == 1) return "01";
+    if(bit1 == 0 && bit2 == 0) return "00";
+    if(bit1 == 1 && bit2 == 0) return "10";
+    return "??";
+}

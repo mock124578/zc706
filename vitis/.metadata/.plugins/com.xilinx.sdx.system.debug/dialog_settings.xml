@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="ad9361_system-imgFile" value="G:\zc706_ad9361\vitis\ad9361\Debug\BOOT.mcs"/>
+	<item key="ad9361_system-offSet" value=""/>
+	<item key="ad9361_system-initFile" value="G:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\boot\fsbl.elf"/>
+	<item key="ad9361_system-flashType" value="qspi-x8-dual_parallel"/>
+	<item key="ad9361_system-verifyFlash" value="false"/>
+	<item key="ad9361_system-blankCheck" value="false"/>
+	<item key="ad9361_system-device" value="Auto Detect"/>
+	<item key="ad9361_system-target" value="Local"/>
+	<item key="programflash.hwplatform" value="ad9361_system"/>
+</section>

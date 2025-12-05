@@ -1,0 +1,645 @@
+
+*** Running vivado
+    with args -log system_axi_dmac_0_2.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_axi_dmac_0_2.tcl
+
+
+
+****** Vivado v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source system_axi_dmac_0_2.tcl -notrace
+create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:10 . Memory (MB): peak = 1348.316 ; gain = 0.000
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'd:/zc706_ad9361/zc706_ad9361.srcs/sources_1/new/wr_rd'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'd:/zc706_ad9361/zc706_ad9361.srcs/sources_1/new/adc_fifo'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'd:/zc706_ad9361/user_ip'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'd:/zc706_ad9361/zc706_ad9361.srcs/sources_1/bd/system/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'G:/vivado.2021.2/Vivado/2021.2/data/ip'.
+Command: synth_design -top system_axi_dmac_0_2 -part xc7z045ffg900-2 -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z045'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z045'
+INFO: [Device 21-403] Loading part xc7z045ffg900-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 18184
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:15 . Memory (MB): peak = 1348.316 ; gain = 0.000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'system_axi_dmac_0_2' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/synth/system_axi_dmac_0_2.v:57]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_regmap' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap.v:38]
+INFO: [Synth 8-155] case statement is not full and has no default [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap.v:184]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_regmap_request' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:38]
+INFO: [Synth 8-155] case statement is not full and has no default [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:150]
+INFO: [Synth 8-6157] synthesizing module 'util_axis_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+INFO: [Synth 8-6157] synthesizing module 'util_axis_fifo_address_generator' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo_address_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'util_axis_fifo_address_generator' (1#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo_address_generator.v:38]
+WARNING: [Synth 8-3848] Net m_axis_tkeep in module/entity util_axis_fifo does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:53]
+WARNING: [Synth 8-3848] Net m_axis_tlast in module/entity util_axis_fifo does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'util_axis_fifo' (2#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-7071] port 'm_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7071] port 'm_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7071] port 'm_axis_almost_empty' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7071] port 's_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7071] port 's_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7071] port 's_axis_almost_full' of module 'util_axis_fifo' is unconnected for instance 'i_transfer_lenghts_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+WARNING: [Synth 8-7023] instance 'i_transfer_lenghts_fifo' of module 'util_axis_fifo' has 20 connections declared, but only 14 given [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:308]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_regmap_request' (3#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap_request.v:38]
+INFO: [Synth 8-6157] synthesizing module 'up_axi' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/common/up_axi.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'up_axi' (4#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/common/up_axi.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_regmap' (5#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_regmap.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_transfer' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_transfer.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_reset_manager' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_reset_manager.v:38]
+INFO: [Synth 8-155] case statement is not full and has no default [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_reset_manager.v:156]
+INFO: [Synth 8-6157] synthesizing module 'sync_bits' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6155] done synthesizing module 'sync_bits' (6#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6157] synthesizing module 'sync_bits__parameterized0' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6155] done synthesizing module 'sync_bits__parameterized0' (6#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_reset_manager' (7#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_reset_manager.v:38]
+INFO: [Synth 8-6157] synthesizing module 'request_arb' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:38]
+INFO: [Synth 8-6157] synthesizing module 'dest_axi_stream' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/dest_axi_stream.v:38]
+INFO: [Synth 8-6157] synthesizing module 'response_generator' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/response_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'response_generator' (8#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/response_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'dest_axi_stream' (9#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/dest_axi_stream.v:38]
+INFO: [Synth 8-6157] synthesizing module 'src_axi_mm' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/src_axi_mm.v:38]
+INFO: [Synth 8-6157] synthesizing module 'splitter' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/splitter.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'splitter' (10#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/splitter.v:38]
+INFO: [Synth 8-6157] synthesizing module 'address_generator' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/address_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'address_generator' (11#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/address_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'src_axi_mm' (12#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/src_axi_mm.v:38]
+INFO: [Synth 8-6157] synthesizing module 'sync_bits__parameterized1' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6155] done synthesizing module 'sync_bits__parameterized1' (12#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6157] synthesizing module 'sync_event' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_event.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'sync_event' (13#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_event.v:38]
+INFO: [Synth 8-6157] synthesizing module 'sync_bits__parameterized2' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6155] done synthesizing module 'sync_bits__parameterized2' (13#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/8f9a/sync_bits.v:46]
+INFO: [Synth 8-6157] synthesizing module 'axi_register_slice' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_register_slice.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_register_slice' (14#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_register_slice.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_burst_memory' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_burst_memory.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_resize_src' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_resize_src.v:43]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_resize_src' (15#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_resize_src.v:43]
+INFO: [Synth 8-6157] synthesizing module 'ad_mem_asym' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/common/ad_mem_asym.v:41]
+INFO: [Synth 8-6155] done synthesizing module 'ad_mem_asym' (16#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/common/ad_mem_asym.v:41]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_resize_dest' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_resize_dest.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_resize_dest' (17#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_resize_dest.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_burst_memory' (18#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_burst_memory.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_register_slice__parameterized0' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_register_slice.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_register_slice__parameterized0' (18#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_register_slice.v:38]
+INFO: [Synth 8-6157] synthesizing module 'util_axis_fifo__parameterized0' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-3848] Net m_axis_tkeep in module/entity util_axis_fifo__parameterized0 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:53]
+WARNING: [Synth 8-3848] Net m_axis_tlast in module/entity util_axis_fifo__parameterized0 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'util_axis_fifo__parameterized0' (18#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-7071] port 'm_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7071] port 'm_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7071] port 'm_axis_almost_empty' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7071] port 's_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7071] port 's_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7071] port 's_axis_almost_full' of module 'util_axis_fifo' is unconnected for instance 'i_dest_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+WARNING: [Synth 8-7023] instance 'i_dest_req_fifo' of module 'util_axis_fifo' has 20 connections declared, but only 14 given [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1012]
+INFO: [Synth 8-6157] synthesizing module 'util_axis_fifo__parameterized1' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-3848] Net m_axis_tkeep in module/entity util_axis_fifo__parameterized1 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:53]
+WARNING: [Synth 8-3848] Net m_axis_tlast in module/entity util_axis_fifo__parameterized1 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'util_axis_fifo__parameterized1' (18#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-7071] port 'm_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7071] port 'm_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7071] port 'm_axis_almost_empty' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7071] port 's_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7071] port 's_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7071] port 's_axis_almost_full' of module 'util_axis_fifo' is unconnected for instance 'i_src_req_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+WARNING: [Synth 8-7023] instance 'i_src_req_fifo' of module 'util_axis_fifo' has 20 connections declared, but only 14 given [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:1037]
+INFO: [Synth 8-6157] synthesizing module 'request_generator' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_generator.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'request_generator' (19#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_generator.v:38]
+INFO: [Synth 8-6157] synthesizing module 'axi_dmac_response_manager' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:38]
+INFO: [Synth 8-6157] synthesizing module 'util_axis_fifo__parameterized2' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-3848] Net m_axis_tkeep in module/entity util_axis_fifo__parameterized2 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:53]
+WARNING: [Synth 8-3848] Net m_axis_tlast in module/entity util_axis_fifo__parameterized2 does not have driver. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:54]
+INFO: [Synth 8-6155] done synthesizing module 'util_axis_fifo__parameterized2' (19#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/b442/util_axis_fifo.v:37]
+WARNING: [Synth 8-7071] port 'm_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7071] port 'm_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7071] port 'm_axis_almost_empty' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7071] port 's_axis_tkeep' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7071] port 's_axis_tlast' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7071] port 's_axis_almost_full' of module 'util_axis_fifo' is unconnected for instance 'i_dest_response_fifo' [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+WARNING: [Synth 8-7023] instance 'i_dest_response_fifo' of module 'util_axis_fifo' has 20 connections declared, but only 14 given [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:119]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_response_manager' (20#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_response_manager.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'request_arb' (21#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/request_arb.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac_transfer' (22#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac_transfer.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'axi_dmac' (23#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ipshared/fd7c/axi_dmac.v:38]
+INFO: [Synth 8-6155] done synthesizing module 'system_axi_dmac_0_2' (24#1) [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/synth/system_axi_dmac_0_2.v:57]
+WARNING: [Synth 8-7129] Port m_axis_tkeep[0] in module util_axis_fifo__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tlast in module util_axis_fifo__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[0] in module util_axis_fifo__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tlast in module util_axis_fifo__parameterized2 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dest_response_resp[1] in module axi_dmac_response_manager is either unconnected or has no load
+WARNING: [Synth 8-7129] Port dest_response_resp[0] in module axi_dmac_response_manager is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[6] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[5] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[4] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[3] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[2] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[1] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[0] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tlast in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_aclk in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_aresetn in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[6] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[5] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[4] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[3] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[2] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[1] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[0] in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tlast in module util_axis_fifo__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[2] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[1] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tkeep[0] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axis_tlast in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[2] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[1] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tkeep[0] in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_tlast in module util_axis_fifo__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module axi_register_slice__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port resetn in module axi_register_slice__parameterized0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module axi_dmac_resize_dest is either unconnected or has no load
+WARNING: [Synth 8-7129] Port reset in module axi_dmac_resize_dest is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module axi_dmac_resize_src is either unconnected or has no load
+WARNING: [Synth 8-7129] Port reset in module axi_dmac_resize_src is either unconnected or has no load
+WARNING: [Synth 8-7129] Port clk in module axi_register_slice is either unconnected or has no load
+WARNING: [Synth 8-7129] Port resetn in module axi_register_slice is either unconnected or has no load
+WARNING: [Synth 8-7129] Port in_clk in module sync_event is either unconnected or has no load
+WARNING: [Synth 8-7129] Port out_clk in module sync_event is either unconnected or has no load
+WARNING: [Synth 8-7129] Port out_resetn in module sync_bits__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port out_clk in module sync_bits__parameterized1 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_rresp[1] in module src_axi_mm is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_rresp[0] in module src_axi_mm is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_dest_axi_aclk in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_dest_axi_aresetn in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_awready in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_wready in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_bvalid in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_bresp[1] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port m_axi_bresp[0] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_aclk in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_valid in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[63] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[62] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[61] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[60] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[59] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[58] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[57] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[56] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[55] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[54] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[53] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[52] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[51] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[50] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[49] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[48] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[47] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[46] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[45] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[44] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[43] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[42] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[41] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[40] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[39] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[38] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[37] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[36] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[35] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[34] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[33] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[32] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[31] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[30] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[29] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[28] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[27] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[26] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[25] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[24] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[23] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[22] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[21] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[20] in module request_arb is either unconnected or has no load
+WARNING: [Synth 8-7129] Port s_axis_data[19] in module request_arb is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:11 ; elapsed = 00:00:18 . Memory (MB): peak = 1354.465 ; gain = 6.148
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:12 ; elapsed = 00:00:20 . Memory (MB): peak = 1372.379 ; gain = 24.062
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:12 ; elapsed = 00:00:20 . Memory (MB): peak = 1372.379 ; gain = 24.062
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.060 . Memory (MB): peak = 1372.379 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [D:/zc706_ad9361/zc706_ad9361.runs/system_axi_dmac_0_2_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [D:/zc706_ad9361/zc706_ad9361.runs/system_axi_dmac_0_2_synth_1/dont_touch.xdc]
+Parsing XDC File [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc] for cell 'inst'
+WARNING: [Vivado 12-1008] No clocks found for command 'get_clocks -of_objects [get_ports s_axi_aclk]'. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:2]
+Resolution: Verify the create_clock command was called to create the clock object before it is referenced.
+INFO: [Vivado 12-626] No clocks found. Please use 'create_clock' or 'create_generated_clock' command to create clocks. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:2]
+WARNING: [Vivado 12-1008] No clocks found for command 'get_clocks -of_objects [get_ports m_src_axi_aclk]'. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:3]
+Resolution: Verify the create_clock command was called to create the clock object before it is referenced.
+INFO: [Vivado 12-626] No clocks found. Please use 'create_clock' or 'create_generated_clock' command to create clocks. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:3]
+WARNING: [Vivado 12-1008] No clocks found for command 'get_clocks -of_objects [get_ports m_axis_aclk]'. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:4]
+Resolution: Verify the create_clock command was called to create the clock object before it is referenced.
+INFO: [Vivado 12-626] No clocks found. Please use 'create_clock' or 'create_generated_clock' command to create clocks. [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc:4]
+Finished Parsing XDC File [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc] for cell 'inst'
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/system_axi_dmac_0_2_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/system_axi_dmac_0_2_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1497.281 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.071 . Memory (MB): peak = 1499.172 ; gain = 1.891
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z045ffg900-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for inst. (constraint file  D:/zc706_ad9361/zc706_ad9361.runs/system_axi_dmac_0_2_synth_1/dont_touch.xdc, line 9).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_dest_req_fifo/\zerodeep.i_raddr_sync /\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_dest_req_fifo/\zerodeep.i_waddr_sync /\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_response_manager/i_dest_response_fifo/\zerodeep.i_raddr_sync /\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_response_manager/i_dest_response_fifo/\zerodeep.i_waddr_sync /\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage1_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/i_sync_control_dest/\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/i_sync_status_dest/\cdc_sync_stage1_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_dest_req_fifo/\zerodeep.i_raddr_sync /\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_dest_req_fifo/\zerodeep.i_waddr_sync /\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_response_manager/i_dest_response_fifo/\zerodeep.i_raddr_sync /\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_response_manager/i_dest_response_fifo/\zerodeep.i_waddr_sync /\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_dest_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_store_and_forward/i_src_sync_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_request_arb/i_sync_req_response_id/cdc_sync_stage2_reg. (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/i_sync_control_dest/\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/i_sync_status_dest/\cdc_sync_stage2_reg[0] . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 6).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_async_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 135).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property SHREG_EXTRACT = NO for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[0].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+Applied set_property ASYNC_REG = true for inst/i_transfer/i_reset_manager/\reset_gen[1].reset_sync_reg . (constraint file  d:/zc706_ad9361/zc706_ad9361.gen/sources_1/bd/system/ip/system_axi_dmac_0_2/system_axi_dmac_0_2_constr.xdc, line 140).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:26 ; elapsed = 00:00:39 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'axi_dmac_reset_manager'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'request_generator'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'axi_dmac_response_manager'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+          STATE_DO_RESET |                           000001 |                              000
+             STATE_RESET |                           000010 |                              001
+          STATE_DISABLED |                           000100 |                              010
+           STATE_STARTUP |                           001000 |                              011
+           STATE_ENABLED |                           010000 |                              100
+          STATE_SHUTDOWN |                           100000 |                              101
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'axi_dmac_reset_manager'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+              STATE_IDLE |                              000 |                              000
+            STATE_GEN_ID |                              001 |                              001
+         STATE_REWIND_ID |                              010 |                              010
+           STATE_CONSUME |                              011 |                              011
+         STATE_WAIT_LAST |                              100 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'request_generator'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+              STATE_IDLE |                              000 |                              000
+               STATE_ACC |                              001 |                              001
+       STATE_WRITE_RESPR |                              010 |                              010
+        STATE_ZERO_COMPL |                              011 |                              011
+      STATE_WRITE_ZRCMPL |                              100 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'axi_dmac_response_manager'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:28 ; elapsed = 00:00:42 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   3 Input   24 Bit       Adders := 1     
+	   2 Input   17 Bit       Adders := 1     
+	   2 Input    5 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 10    
+	   2 Input    3 Bit       Adders := 2     
+	   3 Input    3 Bit       Adders := 1     
+	   2 Input    2 Bit       Adders := 4     
+	   2 Input    1 Bit       Adders := 4     
++---XORs : 
+	   2 Input      1 Bit         XORs := 48    
++---XORs : 
+	                2 Bit    Wide XORs := 2     
++---Registers : 
+	               64 Bit    Registers := 1     
+	               63 Bit    Registers := 1     
+	               32 Bit    Registers := 5     
+	               28 Bit    Registers := 1     
+	               27 Bit    Registers := 3     
+	               26 Bit    Registers := 1     
+	               24 Bit    Registers := 2     
+	               17 Bit    Registers := 2     
+	                9 Bit    Registers := 3     
+	                8 Bit    Registers := 2     
+	                7 Bit    Registers := 2     
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 23    
+	                3 Bit    Registers := 5     
+	                2 Bit    Registers := 10    
+	                1 Bit    Registers := 79    
++---RAMs : 
+	               8K Bit	(128 X 64 bit)          RAMs := 1     
+	              104 Bit	(4 X 26 bit)          RAMs := 1     
+	               40 Bit	(8 X 5 bit)          RAMs := 1     
++---Muxes : 
+	  11 Input   32 Bit        Muxes := 1     
+	   2 Input   32 Bit        Muxes := 3     
+	  15 Input   32 Bit        Muxes := 1     
+	   8 Input   21 Bit        Muxes := 1     
+	   3 Input   17 Bit        Muxes := 1     
+	   6 Input    6 Bit        Muxes := 1     
+	   2 Input    6 Bit        Muxes := 1     
+	   2 Input    5 Bit        Muxes := 4     
+	   2 Input    4 Bit        Muxes := 5     
+	  18 Input    4 Bit        Muxes := 2     
+	   7 Input    3 Bit        Muxes := 1     
+	   2 Input    3 Bit        Muxes := 50    
+	   5 Input    3 Bit        Muxes := 9     
+	   2 Input    2 Bit        Muxes := 5     
+	   3 Input    2 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 68    
+	   7 Input    1 Bit        Muxes := 3     
+	   4 Input    1 Bit        Muxes := 3     
+	   6 Input    1 Bit        Muxes := 1     
+	   5 Input    1 Bit        Muxes := 1     
+	   3 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 900 (col length:140)
+BRAMs: 1090 (col length: RAMB18 140 RAMB36 70)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-6014] Unused sequential element i_transfer/i_request_arb/i_src_dma_mm/last_beat_bytes_mem_reg was removed. 
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:35 ; elapsed = 00:00:51 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Preliminary Mapping Report (see note below)
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name | RTL Object                                                   | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|inst        | i_transfer/i_request_arb/i_store_and_forward/i_mem/m_ram_reg | 128 x 64(NO_CHANGE)    | W |   | 128 x 64(WRITE_FIRST)  |   | R | Port A and B     | 0      | 1      | 
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+|Module Name | RTL Object                                                                 | Inference | Size (Depth x Width) | Primitives    | 
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+|inst        | i_regmap/i_regmap_request/i_transfer_lenghts_fifo/fifo.sync_clocks.ram_reg | Implied   | 4 x 26               | RAM32M x 5    | 
+|inst        | i_transfer/i_request_arb/eot_mem_src_reg                                   | Implied   | 16 x 1               | RAM16X1D x 1  | 
+|inst        | i_transfer/i_request_arb/i_store_and_forward/burst_len_mem_reg             | Implied   | 8 x 4                | RAM32M x 1    | 
+|inst        | i_transfer/i_request_arb/eot_mem_dest_reg                                  | Implied   | 16 x 1               | RAM16X1D x 2  | 
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:46 ; elapsed = 00:01:04 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:46 ; elapsed = 00:01:05 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Block RAM: Final Mapping Report
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|Module Name | RTL Object                                                   | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+|inst        | i_transfer/i_request_arb/i_store_and_forward/i_mem/m_ram_reg | 128 x 64(NO_CHANGE)    | W |   | 128 x 64(WRITE_FIRST)  |   | R | Port A and B     | 0      | 1      | 
++------------+--------------------------------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
+
+
+Distributed RAM: Final Mapping Report
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+|Module Name | RTL Object                                                                 | Inference | Size (Depth x Width) | Primitives    | 
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+|inst        | i_regmap/i_regmap_request/i_transfer_lenghts_fifo/fifo.sync_clocks.ram_reg | Implied   | 4 x 26               | RAM32M x 5    | 
+|inst        | i_transfer/i_request_arb/eot_mem_src_reg                                   | Implied   | 16 x 1               | RAM16X1D x 1  | 
+|inst        | i_transfer/i_request_arb/i_store_and_forward/burst_len_mem_reg             | Implied   | 8 x 4                | RAM32M x 1    | 
+|inst        | i_transfer/i_request_arb/eot_mem_dest_reg                                  | Implied   | 16 x 1               | RAM16X1D x 2  | 
++------------+----------------------------------------------------------------------------+-----------+----------------------+---------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-3332] Sequential element (i_transfer/i_request_arb/i_req_gen/FSM_sequential_state_reg[2]) is unused and will be removed from module axi_dmac.
+WARNING: [Synth 8-3332] Sequential element (i_transfer/i_request_arb/i_req_gen/FSM_sequential_state_reg[1]) is unused and will be removed from module axi_dmac.
+INFO: [Synth 8-7052] The timing for the instance inst/i_transfer/i_request_arb/i_store_and_forward/i_mem/m_ram_reg (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:47 ; elapsed = 00:01:06 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |CARRY4   |    16|
+|2     |LUT1     |    31|
+|3     |LUT2     |    73|
+|4     |LUT3     |   105|
+|5     |LUT4     |   101|
+|6     |LUT5     |    66|
+|7     |LUT6     |   143|
+|8     |RAM16X1D |     3|
+|9     |RAM32M   |     5|
+|10    |RAM32X1D |     2|
+|11    |RAMB36E1 |     1|
+|12    |FDPE     |    10|
+|13    |FDRE     |   634|
+|14    |FDSE     |    44|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 271 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:41 ; elapsed = 00:01:15 . Memory (MB): peak = 1499.172 ; gain = 24.062
+Synthesis Optimization Complete : Time (s): cpu = 00:00:58 ; elapsed = 00:01:21 . Memory (MB): peak = 1499.172 ; gain = 150.855
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.089 . Memory (MB): peak = 1499.172 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 27 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1499.172 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 10 instances were transformed.
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 3 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 5 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 2 instances
+
+Synth Design complete, checksum: e0054385
+INFO: [Common 17-83] Releasing license: Synthesis
+97 Infos, 143 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:01:07 ; elapsed = 00:01:36 . Memory (MB): peak = 1499.172 ; gain = 150.855
+INFO: [Common 17-1381] The checkpoint 'D:/zc706_ad9361/zc706_ad9361.runs/system_axi_dmac_0_2_synth_1/system_axi_dmac_0_2.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP system_axi_dmac_0_2, cache-ID = ca251519751510a6
+INFO: [Coretcl 2-1174] Renamed 30 cell refs.
+INFO: [Common 17-1381] The checkpoint 'D:/zc706_ad9361/zc706_ad9361.runs/system_axi_dmac_0_2_synth_1/system_axi_dmac_0_2.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file system_axi_dmac_0_2_utilization_synth.rpt -pb system_axi_dmac_0_2_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Fri Dec  5 17:24:55 2025...

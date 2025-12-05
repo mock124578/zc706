@@ -1,0 +1,740 @@
+/******************************************************************************/
+/***************************** Include Files **********************************/
+/******************************************************************************/
+#include <stdint.h>
+#include <xil_cache.h>
+#include <xil_io.h>
+#include "dac_core.h"
+#include "parameters.h"
+#include "util.h"
+#include <time.h>
+/******************************************************************************/
+/********************** Macros and Constants Definitions **********************/
+/******************************************************************************/
+//#define FMCOMMS5
+
+/******************************************************************************/
+/************************ Variables Definitions *******************************/
+/******************************************************************************/
+struct dds_state dds_st[2];
+
+/******************************************************************************/
+/********************** Macros and Constants Definitions **********************/
+
+uint32_t num_symbols;  // 在函数顶部先声明
+
+/***************************************************************************//**
+ * @brief dac_read 从对应 TX 核的寄存器读取 32-bit 值并通过 data 返回
+*******************************************************************************/
+void dac_read(struct ad9361_rf_phy *phy, uint32_t regAddr, uint32_t *data)
+{
+	switch (phy->id_no)
+	{
+	case 0:
+		*data = Xil_In32(AD9361_TX_0_BASEADDR + regAddr);
+		break;
+	case 1:
+		*data = Xil_In32(AD9361_TX_1_BASEADDR + regAddr);
+		break;
+	default:
+		break;
+	}
+}
+
+/***************************************************************************//**
+ * @brief dac_write 向对应 TX 核的寄存器写入 32-bit 值。
+*******************************************************************************/
+void dac_write(struct ad9361_rf_phy *phy, uint32_t regAddr, uint32_t data)
+{
+	switch (phy->id_no)
+	{
+	case 0:
+		Xil_Out32(AD9361_TX_0_BASEADDR + regAddr, data);
+		break;
+	case 1:
+		Xil_Out32(AD9361_TX_1_BASEADDR + regAddr, data);
+		break;
+	default:
+		break;
+	}
+}
+
+/***************************************************************************//**
+ * @brief dac_dma_read 从 DMA 控制器（AD9361 TX DMA）的寄存器读取 32-bit 值。
+*******************************************************************************/
+void dac_dma_read(uint32_t regAddr, uint32_t *data)
+{
+	*data = Xil_In32(CF_AD9361_TX_DMA_BASEADDR + regAddr);
+}
+
+/***************************************************************************//**
+ * @brief dac_dma_write 向 DMA 控制器寄存器写入 32-bit 值（用于 DMA 配置/控制）。
+*******************************************************************************/
+void dac_dma_write(uint32_t regAddr, uint32_t data)
+{
+	Xil_Out32(CF_AD9361_TX_DMA_BASEADDR + regAddr, data);
+}
+
+/***************************************************************************//**
+ * @brief dds_default_setup 对单个 DDS 通道执行常规默认设置：设置相位、频率、幅度（scale），并缓存这些值到 dds_st
+*******************************************************************************/
+int32_t dds_default_setup(struct ad9361_rf_phy *phy,
+							 uint32_t chan, uint32_t phase,
+							 uint32_t freq, int32_t scale)
+{
+	dds_set_phase(phy, chan, phase);
+	dds_set_frequency(phy, chan, freq);
+	dds_set_scale(phy, chan, scale);
+	dds_st[phy->id_no].cached_freq[chan] = freq;//HZ
+	dds_st[phy->id_no].cached_phase[chan] = phase;//微度
+	dds_st[phy->id_no].cached_scale[chan] = scale;//250000-0.25
+
+	return 0;
+}
+
+/***************************************************************************//**
+ * @brief dac_stop停止 DAC 输出（用于在更新 DDS 寄存器前停掉输出避免毛刺）。
+*******************************************************************************/
+void dac_stop(struct ad9361_rf_phy *phy)
+{
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) < 8)
+	{
+		dac_write(phy, DAC_REG_CNTRL_1, 0);
+	}
+}
+
+/***************************************************************************//**
+ * @brief dac_start_sync 以同步或启用方式重新启动/使能 DAC。用于在配置完成后同步激活输出
+*******************************************************************************/
+void dac_start_sync(struct ad9361_rf_phy *phy, bool force_on)
+{
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) < 8)
+	{
+		dac_write(phy, DAC_REG_CNTRL_1, (dds_st[phy->id_no].enable || force_on) ? DAC_ENABLE : 0);
+	}
+	else
+	{
+		dac_write(phy, DAC_REG_CNTRL_1, DAC_SYNC);
+	}
+}
+
+
+
+
+
+
+const uint16_t cos_lut[32] = {
+0x7D0, 0x7AA, 0x738, 0x67F, 0x586, 0x457, 0x2FD, 0x186, 0x000, 0xE7A, 0xD03, 0xBA9, 0xA7A, 0x981, 0x8C8, 0x856, 0x830, 0x856, 0x8C8, 0x981, 0xA7A, 0xBA9, 0xD03, 0xE7A, 0x000, 0x186, 0x2FD, 0x457, 0x586, 0x67F, 0x738, 0x7AA};
+
+const uint16_t sine_lut[32] = {
+0x000, 0x186, 0x2FD, 0x457, 0x586, 0x67F, 0x738, 0x7AA, 0x7D0, 0x7AA, 0x738, 0x67F, 0x586, 0x457, 0x2FD, 0x186, 0x000, 0xE7A, 0xD03, 0xBA9, 0xA7A, 0x981, 0x8C8, 0x856, 0x830, 0x856, 0x8C8, 0x981, 0xA7A, 0xBA9, 0xD03, 0xE7A};
+
+
+void ascii_to_qpsk(uint8_t ascii_char, uint8_t *symbols)
+{
+    symbols[0] = (ascii_char >> 6) & 0x03; // 高两位
+    symbols[1] = (ascii_char >> 4) & 0x03;
+    symbols[2] = (ascii_char >> 2) & 0x03;
+    symbols[3] = ascii_char & 0x03;        // 低两位
+}
+
+/***************************************************************************//**
+ * @brief dac_init
+*******************************************************************************/
+void dac_init(struct ad9361_rf_phy *phy, uint8_t data_sel, uint8_t config_dma)
+{
+	uint32_t tx_count;
+	uint32_t index;
+	uint32_t index_i1;
+	uint32_t index_q1;
+	uint32_t index_i2;
+	uint32_t index_q2;
+	uint32_t index_mem;
+	uint32_t data_i1;
+	uint32_t data_q1;
+	uint32_t data_i2;
+	uint32_t data_q2;
+	uint32_t length;
+	uint32_t reg_ctrl_2;
+
+	dac_write(phy, DAC_REG_RSTN, 0x0);
+	dac_write(phy, DAC_REG_RSTN, DAC_RSTN | DAC_MMCM_RSTN);
+
+	dds_st[phy->id_no].dac_clk = &phy->clks[TX_SAMPL_CLK]->rate;
+	dds_st[phy->id_no].rx2tx2 = phy->pdata->rx2tx2;
+	dac_read(phy, DAC_REG_CNTRL_2, &reg_ctrl_2);
+	if(dds_st[phy->id_no].rx2tx2)
+	{
+		dds_st[phy->id_no].num_buf_channels = 4;
+		if(phy->pdata->port_ctrl.pp_conf[2] & LVDS_MODE)
+			dac_write(phy, DAC_REG_RATECNTRL, DAC_RATE(3));
+		else
+			dac_write(phy, DAC_REG_RATECNTRL, DAC_RATE(1));
+		reg_ctrl_2 &= ~DAC_R1_MODE;
+	}
+	else
+	{
+		dds_st[phy->id_no].num_buf_channels = 2;
+		if(phy->pdata->port_ctrl.pp_conf[2] & LVDS_MODE)
+			dac_write(phy, DAC_REG_RATECNTRL, DAC_RATE(1));
+		else
+			dac_write(phy, DAC_REG_RATECNTRL, DAC_RATE(0));
+		reg_ctrl_2 |= DAC_R1_MODE;
+	}
+	dac_write(phy, DAC_REG_CNTRL_2, reg_ctrl_2);
+
+	dac_read(phy, DAC_REG_VERSION, &dds_st[phy->id_no].pcore_version);
+
+	dac_stop(phy);
+	switch (data_sel) {
+	case DATA_SEL_DDS:
+		dds_default_setup(phy, DDS_CHAN_TX1_I_F1, 0, 1000000, 250000);
+		dds_default_setup(phy, DDS_CHAN_TX1_I_F2, 0, 1000000, 250000);
+		dds_default_setup(phy, DDS_CHAN_TX1_Q_F1, 0, 1000000, 250000);
+		dds_default_setup(phy, DDS_CHAN_TX1_Q_F2, 0, 1000000, 250000);
+		if(dds_st[phy->id_no].rx2tx2)
+		{
+			dds_default_setup(phy, DDS_CHAN_TX2_I_F1, 90000, 1000000, 250000);
+			dds_default_setup(phy, DDS_CHAN_TX2_I_F2, 90000, 1000000, 250000);
+			dds_default_setup(phy, DDS_CHAN_TX2_Q_F1, 0, 1000000, 250000);
+			dds_default_setup(phy, DDS_CHAN_TX2_Q_F2, 0, 1000000, 250000);
+		}
+		dac_datasel(phy, -1, DATA_SEL_DDS);
+		break;
+	case DATA_SEL_DMA:
+		if(config_dma)
+		{
+			tx_count = sizeof(sine_lut) / sizeof(uint16_t);
+			if(dds_st[phy->id_no].rx2tx2)
+			{
+				for(index = 0, index_mem = 0; index < (tx_count * 2); index += 2, index_mem += 2)
+
+				{
+					index_i1 = index;
+					index_q1 = index + (tx_count / 2);
+					if(index_q1 >= (tx_count * 2))
+						index_q1 -= (tx_count * 2);
+					data_i1 = (sine_lut[index_i1 / 2] << 20);
+					data_q1 = (sine_lut[index_q1 / 2] << 4);
+					Xil_Out32(DAC_DDR_BASEADDR + index_mem * 4, data_i1 | data_q1);
+
+					index_i2 = index_i1;
+					index_q2 = index_q1;
+					if(index_i2 >= (tx_count * 2))
+						index_i2 -= (tx_count * 2);
+					if(index_q2 >= (tx_count * 2))
+						index_q2 -= (tx_count * 2);
+					data_i2 = (sine_lut[index_i2 / 2] << 20);
+					data_q2 = (sine_lut[index_q2 / 2] << 4);
+					Xil_Out32(DAC_DDR_BASEADDR + (index_mem + 1) * 4, data_i2 | data_q2);
+			    }
+			}
+			else
+			{
+/****************************64个符号帧头*******************************/
+				uint8_t preamble_bits[64] = {
+				0b11, 0b00, 0b00, 0b01, 0b01, 0b11, 0b01, 0b01,
+				0b00, 0b00, 0b11, 0b11, 0b00, 0b10, 0b01, 0b00,
+				0b01, 0b00, 0b00, 0b10, 0b10, 0b01, 0b01, 0b10,
+				0b11, 0b00, 0b10, 0b00, 0b11, 0b10, 0b01, 0b01,
+				0b00, 0b10, 0b01, 0b00, 0b11, 0b01, 0b11, 0b00,
+				0b01, 0b10, 0b10, 0b01, 0b01, 0b11, 0b11, 0b10,
+				0b11, 0b10, 0b01, 0b11, 0b00, 0b00, 0b11, 0b11,
+				0b10, 0b10, 0b00, 0b10, 0b10, 0b11, 0b11, 0b01
+				};
+/**************************自定义数据帧*********************************/
+			uint8_t payload_bits[448];
+				for(int i = 0; i < 448; i++)
+				{
+				    switch(i % 8)
+				    {
+				        case 0:
+				        case 1: payload_bits[i] = 2; break; // 2,22
+				        case 2:
+				        case 3: payload_bits[i] = 0; break; // 0,00
+				        case 4:
+				        case 5: payload_bits[i] = 1; break; // 1,11
+				        case 6:
+				        case 7: payload_bits[i] = 3; break; // 3,33
+				    }
+				}
+			    uint8_t frame_bits[512];
+				for(int i=0;i<64;i++) frame_bits[i] = preamble_bits[i];
+				for(int i=0;i<448;i++) frame_bits[i+64] = payload_bits[i];
+/***********************************************************************************/
+//				char msg[] = "HELLO_QPSK_TEST_DEMO_123456789";
+//				uint32_t msg_len = sizeof(msg) - 1; // 去掉末尾 '\0'
+//				uint32_t preamble_len = 64; // 固定帧头长度
+//		    	 num_symbols = preamble_len + msg_len * 4; // 4符号/字符
+//				uint8_t frame_bits[num_symbols];
+////帧头
+//				for(int i=0; i<preamble_len; i++)
+//				    frame_bits[i] = preamble_bits[i];
+//
+//				// ASCII -> QPSK符号映射
+//				for(uint32_t i=0; i<msg_len; i++) {
+//				    uint8_t ascii = msg[i];
+//				    // 高低两位映射成QPSK符号
+//				    frame_bits[preamble_len + i*4 + 0] = (ascii >> 6) & 0x03;
+//				    frame_bits[preamble_len + i*4 + 1] = (ascii >> 4) & 0x03;
+//				    frame_bits[preamble_len + i*4 + 2] = (ascii >> 2) & 0x03;
+//				    frame_bits[preamble_len + i*4 + 3] = ascii & 0x03;
+//				}
+//				// 调试用：打印整个bit流
+//				printf("Frame bits (symbol values 0~3):\n");
+//				for(int i=0; i<num_symbols; i++) {
+//				    printf("%d ", frame_bits[i]);
+//				    if((i+1)%16 == 0) printf("\n"); // 每16个符号换行
+//				}
+//				printf("\n");
+
+/******************* 构建完整的符号帧：帧头+数据帧*****************************/
+
+
+
+				uint32_t sample_idx = 0;
+
+				for(int sym=0; sym<num_symbols; sym++)
+				{
+				    uint8_t bits = frame_bits[sym];
+				    int phase_deg;
+				    switch(bits)
+				    {
+				        case 0b11: phase_deg = 45; break;
+				        case 0b01: phase_deg = 135; break;
+				        case 0b00: phase_deg = 225; break;
+				        case 0b10: phase_deg = 315; break;
+				        default:   phase_deg = 0; break;
+				    }
+
+				    uint32_t phase_shift = (phase_deg * tx_count)/360;
+
+				    for(int i=0;i<tx_count;i++)
+				    {
+				        uint32_t index = (i + phase_shift) % tx_count;
+
+				        int32_t data_i_raw = cos_lut[index] ;
+				        int32_t data_q_raw = sine_lut[index] ;
+
+
+				        uint32_t data_i = data_i_raw << 20;
+				        uint32_t data_q = data_q_raw << 4;
+				        Xil_Out32(DAC_DDR_BASEADDR + sample_idx*4, data_i | data_q);
+				        sample_idx++;
+				    }
+
+
+			}
+
+			}
+
+			dac_dma_write(AXI_DMAC_REG_CTRL, 0);
+
+
+
+			Xil_DCacheFlush();
+	 //    length = tx_count * num_symbols;
+
+/*
+写入ddr的内存地址计算
+ddr=0x2A000000+length*4
+最大为2048*8*4=64k
+每个采样占四个字节32bit，可以存65536点
+*/
+
+		if(dds_st[phy->id_no].rx2tx2)
+			{
+				length = (tx_count * 8);
+			}
+			else
+			{
+				length = tx_count * 2048;//一定要对上，不然循环播放会出错，溢出地址出现错的值
+				/*128-4一个周期lut128,原来qpsk256-64符号帧0x8000+基地址（0x2A000000）32k
+				那么512 符号帧对应 2048，原来八倍，地址应该是0x40000+基地址256k
+				2048-8196
+*/
+			}
+
+			dac_dma_write(AXI_DMAC_REG_CTRL, 0);
+			dac_dma_write(AXI_DMAC_REG_CTRL, AXI_DMAC_CTRL_ENABLE);
+			dac_dma_write(AXI_DMAC_REG_FLAGS, DMAC_FLAGS_CYCLIC);
+			dac_dma_write(AXI_DMAC_REG_SRC_ADDRESS, DAC_DDR_BASEADDR);
+			dac_dma_write(AXI_DMAC_REG_SRC_STRIDE, 0x0);
+			dac_dma_write(AXI_DMAC_REG_X_LENGTH, length - 1);
+			dac_dma_write(AXI_DMAC_REG_Y_LENGTH, 0x0);
+
+			dac_dma_write(AXI_DMAC_REG_START_TRANSFER, 0x1);
+		}
+		dac_datasel(phy, -1, DATA_SEL_DMA);
+		break;
+	default:
+		break;
+	}
+	dds_st[phy->id_no].enable = true;
+	dac_start_sync(phy, 0);
+}
+
+/***************************************************************************//**
+ * @brief dds_set_frequency设定DDS的频率
+*******************************************************************************/
+void dds_set_frequency(struct ad9361_rf_phy *phy, uint32_t chan, uint32_t freq)
+{
+	uint64_t val64;
+	uint32_t reg;
+
+	dds_st[phy->id_no].cached_freq[chan] = freq;
+	dac_stop(phy);
+	dac_read(phy, DAC_REG_CHAN_CNTRL_2_IIOCHAN(chan), &reg);
+	reg &= ~DAC_DDS_INCR(~0);
+	val64 = (uint64_t) freq * 0xFFFFULL;
+	do_div(&val64, *dds_st[phy->id_no].dac_clk);
+	reg |= DAC_DDS_INCR(val64) | 1;
+	dac_write(phy, DAC_REG_CHAN_CNTRL_2_IIOCHAN(chan), reg);
+	dac_start_sync(phy, 0);
+}
+
+/***************************************************************************//**
+ * @brief dds_get_frequency读取并返回缓存的 DDS 频率（并不直接查询硬件寄存器）
+*******************************************************************************/
+void dds_get_frequency(struct ad9361_rf_phy *phy, uint32_t chan, uint32_t *freq)
+{
+	*freq = dds_st[phy->id_no].cached_freq[chan];
+}
+
+/***************************************************************************//**
+ * @brief dds_set_phase设定DDS的起始相位并缓存1/1000°
+*******************************************************************************/
+void dds_set_phase(struct ad9361_rf_phy *phy, uint32_t chan, uint32_t phase)
+{
+	uint64_t val64;
+	uint32_t reg;
+
+	dds_st[phy->id_no].cached_phase[chan] = phase;
+	dac_stop(phy);
+	dac_read(phy, DAC_REG_CHAN_CNTRL_2_IIOCHAN(chan), &reg);
+	reg &= ~DAC_DDS_INIT(~0);
+	val64 = (uint64_t) phase * 0x10000ULL + (360000 / 2);
+
+	reg |= DAC_DDS_INIT(val64);
+	dac_write(phy, DAC_REG_CHAN_CNTRL_2_IIOCHAN(chan), reg);
+	dac_start_sync(phy, 0);
+}
+
+/***************************************************************************//**
+ * @brief dds_get_phase读取相位
+*******************************************************************************/
+void dds_get_phase(struct ad9361_rf_phy *phy, uint32_t chan, uint32_t *phase)
+{
+	*phase = dds_st[phy->id_no].cached_phase[chan];
+}
+
+/***************************************************************************//**
+ * @brief dds_set_phase设置幅度
+*******************************************************************************/
+void dds_set_scale(struct ad9361_rf_phy *phy, uint32_t chan, int32_t scale_micro_units)
+{
+	uint32_t scale_reg;
+	uint32_t sign_part;
+	uint32_t int_part;
+	uint32_t fract_part;
+
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) > 6)
+	{
+		if(scale_micro_units >= 1000000)
+		{
+			sign_part = 0;
+			int_part = 1;
+			fract_part = 0;
+			dds_st[phy->id_no].cached_scale[chan] = 1000000;
+			goto set_scale_reg;
+		}
+		if(scale_micro_units <= -1000000)
+		{
+			sign_part = 1;
+			int_part = 1;
+			fract_part = 0;
+			dds_st[phy->id_no].cached_scale[chan] = -1000000;
+			goto set_scale_reg;
+		}
+		dds_st[phy->id_no].cached_scale[chan] = scale_micro_units;
+		if(scale_micro_units < 0)
+		{
+			sign_part = 1;
+			int_part = 0;
+			scale_micro_units *= -1;
+		}
+		else
+		{
+			sign_part = 0;
+			int_part = 0;
+		}
+		fract_part = (uint32_t)(((uint64_t)scale_micro_units * 0x4000) / 1000000);
+	set_scale_reg:
+		scale_reg = (sign_part << 15) | (int_part << 14) | fract_part;
+	}
+	else
+	{
+		if(scale_micro_units >= 1000000)
+		{
+			scale_reg = 0;
+			scale_micro_units = 1000000;
+		}
+		if(scale_micro_units <= 0)
+		{
+			scale_reg = 0;
+			scale_micro_units = 0;
+		}
+		dds_st[phy->id_no].cached_scale[chan] = scale_micro_units;//1000000=1.0
+		fract_part = (uint32_t)(scale_micro_units);
+		if(fract_part != 0){
+			scale_reg = 500000 / fract_part;
+		}	
+	}
+	dac_stop(phy);
+	dac_write(phy, DAC_REG_CHAN_CNTRL_1_IIOCHAN(chan), DAC_DDS_SCALE(scale_reg));
+	dac_start_sync(phy, 0);
+}
+
+/***************************************************************************//**
+ * @brief dds_get_phase读取幅度
+*******************************************************************************/
+void dds_get_scale(struct ad9361_rf_phy *phy, uint32_t chan, int32_t *scale_micro_units)
+{
+	*scale_micro_units = dds_st[phy->id_no].cached_scale[chan];
+}
+
+/***************************************************************************//**
+ * @brief dds_update读取并返回缓存的 DDS 频率（并不直接查询硬件寄存器）
+*******************************************************************************/
+void dds_update(struct ad9361_rf_phy *phy)
+{
+	uint32_t chan;
+
+	for(chan = DDS_CHAN_TX1_I_F1; chan <= DDS_CHAN_TX2_Q_F2; chan++)
+	{
+		dds_set_frequency(phy, chan, dds_st[phy->id_no].cached_freq[chan]);
+		dds_set_phase(phy, chan, dds_st[phy->id_no].cached_phase[chan]);
+		dds_set_scale(phy, chan, dds_st[phy->id_no].cached_scale[chan]);
+	}
+}
+
+/***************************************************************************//**
+ * @brief dac_datasel配置要送入 DAC 的数据来源（DDS, DMA, SED 等）。支持对单通道或所有通道设置（取决 pcore 版本）
+*******************************************************************************/
+int32_t dac_datasel(struct ad9361_rf_phy *phy, int32_t chan, enum dds_data_select sel)
+{
+	int32_t i;
+
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) > 7) {
+		if (chan < 0) { /* ALL */
+			for (i = 0; i < dds_st[phy->id_no].num_buf_channels; i++) {
+				dac_write(phy, DAC_REG_CHAN_CNTRL_7(i), sel);
+				dds_st[phy->id_no].cached_datasel[i] = sel;
+			}
+		} else {
+			dac_write(phy, DAC_REG_CHAN_CNTRL_7(chan), sel);
+			dds_st[phy->id_no].cached_datasel[chan] = sel;
+		}
+	} else {
+		uint32_t reg;
+
+		switch(sel) {
+		case DATA_SEL_DDS:
+		case DATA_SEL_SED:
+		case DATA_SEL_DMA:
+			dac_read(phy, DAC_REG_CNTRL_2, &reg);
+			reg &= ~DAC_DATA_SEL(~0);
+			reg |= DAC_DATA_SEL(sel);
+			dac_write(phy, DAC_REG_CNTRL_2, reg);
+			break;
+		default:
+			return -EINVAL;
+		}
+		for (i = 0; i < dds_st[phy->id_no].num_buf_channels; i++) {
+			dds_st[phy->id_no].cached_datasel[i] = sel;
+		}
+	}
+
+	return 0;
+}
+
+/***************************************************************************//**
+ * @brief dac_get_datasel返回指定通道缓存的 data select（不从硬件读）
+*******************************************************************************/
+void dac_get_datasel(struct ad9361_rf_phy *phy, int32_t chan, enum dds_data_select *sel)
+{
+	*sel = dds_st[phy->id_no].cached_datasel[chan];
+}
+
+/***************************************************************************//**
+ * @brief dds_to_signed_mag_fmt把带符号的 (val, val2)（val 表示整数符号位/是否为 1，val2 为小数微单位）转换成硬件需要的 1.1.14 格式（16 位：sign|int|frac）。
+*******************************************************************************/
+uint32_t dds_to_signed_mag_fmt(int32_t val, int32_t val2)
+{
+	uint32_t i;
+	uint64_t val64;
+
+	/* format is 1.1.14 (sign, integer and fractional bits) */
+
+	switch (val) {
+	case 1:
+		i = 0x4000;
+		break;
+	case -1:
+		i = 0xC000;
+		break;
+	case 0:
+		i = 0;
+		if (val2 < 0) {
+				i = 0x8000;
+				val2 *= -1;
+		}
+		break;
+	default:
+		/* Invalid Value */
+		i = 0;
+	}
+
+	val64 = (uint64_t)val2 * 0x4000UL + (1000000UL / 2);
+	do_div(&val64, 1000000UL);
+
+	return i | val64;
+}
+
+/***************************************************************************//**
+ * @brief dds_from_signed_mag_fmt把硬件的 1.1.14 格式值解码回 (val, val2)，与 dds_to_signed_mag_fmt 相反
+*******************************************************************************/
+void dds_from_signed_mag_fmt(uint32_t val,
+							 int32_t *r_val,
+							 int32_t *r_val2)
+{
+	uint64_t val64;
+	int32_t sign;
+
+	if (val & 0x8000)
+		sign = -1;
+	else
+		sign = 1;
+
+	if (val & 0x4000)
+		*r_val = 1 * sign;
+	else
+		*r_val = 0;
+
+	val &= ~0xC000;
+
+	val64 = val * 1000000ULL + (0x4000 / 2);
+	do_div(&val64, 0x4000);
+
+	if (*r_val == 0)
+		*r_val2 = val64 * sign;
+	else
+		*r_val2 = val64;
+}
+
+/***************************************************************************//**
+ * @brief dds_set_calib_scale_phase对特定通道在 pcore >= 8 的情况下设置 IQ 校正（scale/phase）系数（写入 IQ 校正寄存器并启用校正）。可用于幅度/相位误差补偿。
+*******************************************************************************/
+int32_t dds_set_calib_scale_phase(struct ad9361_rf_phy *phy,
+								  uint32_t phase,
+								  uint32_t chan,
+								  int32_t val,
+								  int32_t val2)
+{
+	uint32_t reg;
+	uint32_t i;
+
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) < 8) {
+		return -1;
+	}
+
+	i = dds_to_signed_mag_fmt(val, val2);
+
+	dac_read(phy, DAC_REG_CHAN_CNTRL_8(chan), &reg);
+
+	if (!((chan + phase) % 2)) {
+		reg &= ~DAC_IQCOR_COEFF_1(~0);
+		reg |= DAC_IQCOR_COEFF_1(i);
+	} else {
+		reg &= ~DAC_IQCOR_COEFF_2(~0);
+		reg |= DAC_IQCOR_COEFF_2(i);
+	}
+	dac_write(phy, DAC_REG_CHAN_CNTRL_8(chan), reg);
+	dac_write(phy, DAC_REG_CHAN_CNTRL_6(chan), DAC_IQCOR_ENB);
+
+	return 0;
+}
+
+/***************************************************************************//**
+ * @brief dds_get_calib_scale_phase读取并返回指定通道的 IQ 校正系数（scale 或 phase），仅支持 pcore >= 8。
+*******************************************************************************/
+int32_t dds_get_calib_scale_phase(struct ad9361_rf_phy *phy,
+								  uint32_t phase,
+								  uint32_t chan,
+								  int32_t *val,
+								  int32_t *val2)
+{
+	uint32_t reg;
+
+	if (PCORE_VERSION_MAJOR(dds_st[phy->id_no].pcore_version) < 8) {
+		return -1;
+	}
+
+	dac_read(phy, DAC_REG_CHAN_CNTRL_8(chan), &reg);
+
+	/* format is 1.1.14 (sign, integer and fractional bits) */
+
+	if (!((phase + chan) % 2)) {
+		reg = DAC_TO_IQCOR_COEFF_1(reg);
+	} else {
+		reg = DAC_TO_IQCOR_COEFF_2(reg);
+	}
+
+	dds_from_signed_mag_fmt(reg, val, val2);
+
+	return 0;
+}
+
+/***************************************************************************//**
+ * @brief dds_set_calib_scale设置通道的校正幅度（scale）。
+*******************************************************************************/
+int32_t dds_set_calib_scale(struct ad9361_rf_phy *phy,
+							uint32_t chan,
+							int32_t val,
+							int32_t val2)
+{
+	return dds_set_calib_scale_phase(phy, 0, chan, val, val2);
+}
+
+/***************************************************************************//**
+ * @brief dds_get_calib_scale获取通道的校正幅度（scale）。
+*******************************************************************************/
+int32_t dds_get_calib_scale(struct ad9361_rf_phy *phy,
+							uint32_t chan,
+							int32_t *val,
+							int32_t *val2)
+{
+	return dds_get_calib_scale_phase(phy, 0, chan, val, val2);
+}
+
+/***************************************************************************//**
+ * @brief dds_set_calib_phase设置通道的校正相位（phase）。
+*******************************************************************************/
+int32_t dds_set_calib_phase(struct ad9361_rf_phy *phy,
+							uint32_t chan,
+							int32_t val,
+							int32_t val2)
+{
+	return dds_set_calib_scale_phase(phy, 1, chan, val, val2);
+}
+
+/***************************************************************************//**
+ * @brief dds_get_calib_phase获取通道的校正相位（phase）。
+*******************************************************************************/
+int32_t dds_get_calib_phase(struct ad9361_rf_phy *phy,
+							uint32_t chan,
+							int32_t *val,
+							int32_t *val2)
+{
+	return dds_get_calib_scale_phase(phy, 1, chan, val, val2);
+}

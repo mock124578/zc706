@@ -1,0 +1,391 @@
+/*
+ * qpsk_demod.c
+ *
+ * 核心实现，将 MATLAB QPSK 解调脚本移植到 C 语言。
+ * (对应 MATLAB Section 1 到 12)
+ */
+
+// === 包含所需库 ===
+#include "qpsk_demod.h"
+#include <stdio.h>
+#include <string.h>     // 用于 memset
+#include <math.h>       // 用于 atan2f, cosf, sinf, sqrtf, fabsf
+#include "xil_printf.h"
+#include "xil_io.h"     // 用于 Xil_In32
+
+// === 数学常量 ===
+#define PI 3.1415926535f
+
+// === 1. 参数定义 (来自 MATLAB Section 1) ===
+
+// QPSK Gray 映射
+static const float   g_phase_table_deg[4] = {45.0f, 135.0f, 225.0f, 315.0f};
+static const char* g_bits_table_str[4] = {"11", "01", "00", "10"};
+static const float   g_phase_table_rad[4] = {
+    45.0f * PI / 180.0f,
+    135.0f * PI / 180.0f,
+    225.0f * PI / 180.0f,
+    315.0f * PI / 180.0f
+};
+
+// 理想前导码 (C 版本)
+static const float g_preamble_phases_ideal_deg[PREAMBLE_LEN_SYMS] = {
+    45, 225, 225, 135, 135, 45, 135, 135, 225, 225, 45, 45, 225, 315, 135, 225,
+    135, 225, 225, 315, 315, 135, 135, 315, 45, 225, 315, 225, 45, 315, 135, 135,
+    225, 315, 135, 225, 45, 135, 45, 225, 135, 315, 315, 135, 135, 45, 45, 315,
+    45, 315, 135, 45, 225, 225, 45, 45, 315, 315, 225, 315, 315, 45, 45, 135
+};
+
+// === 静态缓冲区 (避免栈溢出) ===
+// 这些是 C 语言实现所必需的。MATLAB 会动态处理，但 C 不会。
+
+// 理想前导码的复数版本 (由 init 函数填充)
+static complex_float g_preamble_syms_ideal[PREAMBLE_LEN_SYMS];
+// 匹配滤波器的 C 版本 (由 init 函数填充)
+static complex_float g_matched_filter_template[FRAME_LEN_SAMPLES]; // (512*8 = 4096)
+
+// --- 管道缓冲区 (Pipeline Buffers) ---
+// 用于存储每一步的计算结果
+static complex_float g_rx_samples[MAX_CAPTURE_SAMPLES];
+static complex_float g_baseband_data[MAX_CAPTURE_SAMPLES];
+static float         g_corr_abs[MAX_CORR_LEN];
+static int           g_corr_lags[MAX_CORR_LEN];
+
+// === 复数数学辅助函数 (C 语言需要) ===
+static complex_float complex_mul(complex_float a, complex_float b) {
+    return (complex_float){a.i * b.i - a.q * b.q, a.i * b.q + a.q * b.i};
+}
+static complex_float complex_conj(complex_float a) {
+    return (complex_float){a.i, -a.q};
+}
+static complex_float complex_add(complex_float a, complex_float b) {
+    return (complex_float){a.i + b.i, a.q + b.q};
+}
+static float complex_mag_sq(complex_float a) {
+    return a.i * a.i + a.q * a.q;
+}
+static float complex_angle_rad(complex_float a) {
+    return atan2f(a.q, a.i);
+}
+
+// === qpsk_demod_init() 实现 ===
+// 对应 MATLAB Section 1: "preamble_syms_ideal = exp(...)" 和 "matched_filter_template = repelem(...)"
+void qpsk_demod_init(void) {
+    xil_printf("QPSK_DEMOD: Initializing LUTs...\n");
+    // 1. 生成 g_preamble_syms_ideal
+    for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+        float rad = g_preamble_phases_ideal_deg[i] * PI / 180.0f;
+        g_preamble_syms_ideal[i].i = cosf(rad);
+        g_preamble_syms_ideal[i].q = sinf(rad);
+    }
+
+    // 2. 生成 g_matched_filter_template (repelem)
+    int template_idx = 0;
+    for (int sym = 0; sym < PREAMBLE_LEN_SYMS; sym++) {
+        for (int s = 0; s < SAMPLES_PER_SYMBOL; s++) {
+            g_matched_filter_template[template_idx] = g_preamble_syms_ideal[sym];
+            template_idx++;
+        }
+    }
+    xil_printf("QPSK_DEMOD: LUTs initialized.\n");
+}
+
+
+// === qpsk_demodulate_and_print() 实现 ===
+// (这是执行所有工作的主函数)
+int qpsk_demodulate_and_print(uint32_t* adc_data_ptr, uint32_t capture_len) {
+
+    // 确保捕获长度不会超出我们的缓冲区
+    if (capture_len > MAX_CAPTURE_SAMPLES) {
+        capture_len = MAX_CAPTURE_SAMPLES;
+    }
+    xil_printf("\n--- QPSK DEMOD START (Capture Len: %d) ---\n", (int)capture_len);
+
+    // === 2. 导入数据 (来自 MATLAB Section 2) ===
+    // "I = data(:,1); Q = data(:,2); complex_data = I + 1i*Q;"
+    // "I = I - mean(I); Q = Q - mean(Q);"
+
+    // a) 计算均值 (用于去直流)
+    double mean_i = 0.0;
+    double mean_q = 0.0;
+    for (int i = 0; i < capture_len; i++) {
+        uint32_t raw_data = Xil_In32((UINTPTR)(adc_data_ptr + i));
+        int16_t I_raw = (raw_data >> 16) & 0xFFFF;
+        int16_t Q_raw = raw_data & 0xFFFF;
+        mean_i += (double)I_raw;
+        mean_q += (double)Q_raw;
+    }
+    mean_i /= (double)capture_len;
+    mean_q /= (double)capture_len;
+    xil_printf("DEMOD_S2: DC Offset I=%.2f, Q=%.2f\n", mean_i, mean_q);
+
+    // b) 解包, 去直流, 归一化, 存入 g_rx_samples
+    float max_abs = 0.0f;
+    for (int i = 0; i < capture_len; i++) {
+        uint32_t raw_data = Xil_In32((UINTPTR)(adc_data_ptr + i));
+        g_rx_samples[i].i = (float)((raw_data >> 16) & 0xFFFF) - (float)mean_i;
+        g_rx_samples[i].q = (float)(raw_data & 0xFFFF) - (float)mean_q;
+
+        float mag = sqrtf(complex_mag_sq(g_rx_samples[i]));
+        if (mag > max_abs) max_abs = mag;
+    }
+    // "complex_data = complex_data / max(abs(complex_data));"
+    if (max_abs > 0.0f) {
+        for (int i = 0; i < capture_len; i++) {
+            g_rx_samples[i].i /= max_abs;
+            g_rx_samples[i].q /= max_abs;
+        }
+    }
+
+    // === 3. 数字下变频 (来自 MATLAB Section 3) ===
+    // "f_carrier = Fs / samples_per_symbol;"
+    // "lo_signal = exp(-1i*2*pi*f_carrier*t);"
+    // "baseband_data = complex_data .* lo_signal;"
+    //
+    // C 语言优化：Fs/f_carrier = 8。这是一个 8 点的旋转。
+
+    complex_float lo_lut[SAMPLES_PER_SYMBOL];
+    for (int i = 0; i < SAMPLES_PER_SYMBOL; i++) {
+        float rad = -1.0f * 2.0f * PI * (float)i / (float)SAMPLES_PER_SYMBOL;
+        lo_lut[i].i = cosf(rad);
+        lo_lut[i].q = sinf(rad);
+    }
+
+    for (int i = 0; i < capture_len; i++) {
+        g_baseband_data[i] = complex_mul(g_rx_samples[i], lo_lut[i % SAMPLES_PER_SYMBOL]);
+    }
+    xil_printf("DEMOD_S3: Digital Down-Conversion complete.\n");
+
+    // === 4. 帧同步 (来自 MATLAB Section 4) ===
+    // "[corr_out, lags] = xcorr(baseband_data, matched_filter_template);"
+    // 这是最昂贵的操作：滑动点积
+
+    xil_printf("DEMOD_S4: Starting Frame Sync (xcorr)...\n");
+    fflush(stdout);//new add
+
+    int template_len = FRAME_LEN_SAMPLES; // 4096
+    int corr_len = 0;
+    float max_corr_val = 0.0f;
+    int peak_idx = -1;
+
+    for (int lag = 0; lag < (capture_len - template_len); lag++) {
+        complex_float dot_prod = {0.0f, 0.0f};
+
+        // 计算点积
+        for (int n = 0; n < template_len; n++) {
+            dot_prod = complex_add(dot_prod,
+                complex_mul(g_baseband_data[lag + n], complex_conj(g_matched_filter_template[n]))
+            );
+        }
+
+        g_corr_lags[lag] = lag; // 对应 MATLAB 的 lags
+        g_corr_abs[lag] = sqrtf(complex_mag_sq(dot_prod)); // 对应 abs(corr_out)
+
+        if (g_corr_abs[lag] > max_corr_val) {
+            max_corr_val = g_corr_abs[lag];
+            peak_idx = lag;
+        }
+        corr_len++;
+    }
+
+    if (peak_idx == -1) {
+        xil_printf("DEMOD_S4: FAILED. No correlation peak found.\n");
+        return -1;
+    }
+
+    // "best_lag = lags(peak_idx); frame_start_sample = best_lag+1;"
+    int frame_start_sample = g_corr_lags[peak_idx] + 1; // Matlab 索引从 1 开始
+    xil_printf("DEMOD_S4: Frame Sync complete. Peak found at sample %d\n", frame_start_sample);
+
+    // === 5. 提取一帧 (来自 MATLAB Section 5) ===
+    // "frame_data = baseband_data(frame_start_sample:..."
+    complex_float frame_data[FRAME_LEN_SAMPLES];
+    for (int i = 0; i < FRAME_LEN_SAMPLES; i++) {
+        int idx = frame_start_sample + i;
+        if (idx >= capture_len) idx -= capture_len; // 环形缓冲
+        frame_data[i] = g_baseband_data[idx];
+    }
+
+    // === 6. 符号定时恢复 (来自 MATLAB Section 6) ===
+    // "for offset = 0:samples_per_symbol-1..."
+    // "sep = std(real(sampled))+std(imag(sampled));"
+    xil_printf("DEMOD_S6: Finding symbol timing offset...\n");
+
+    complex_float preamble_wf[PREAMBLE_LEN_SYMS * SAMPLES_PER_SYMBOL];
+    for(int i=0; i < PREAMBLE_LEN_SYMS * SAMPLES_PER_SYMBOL; i++) {
+        preamble_wf[i] = frame_data[i];
+    }
+
+    int best_sym_offset = 0;
+    float max_sep = 0.0f;
+
+    for (int offset = 0; offset < SAMPLES_PER_SYMBOL; offset++) {
+        // 1. 抽取符号
+        complex_float sampled_syms[PREAMBLE_LEN_SYMS];
+        for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+            sampled_syms[i] = preamble_wf[offset + i * SAMPLES_PER_SYMBOL];
+        }
+
+        // 2. 计算 I 和 Q 的均值
+        float mean_i_sym = 0.0f, mean_q_sym = 0.0f;
+        for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+            mean_i_sym += sampled_syms[i].i;
+            mean_q_sym += sampled_syms[i].q;
+        }
+        mean_i_sym /= PREAMBLE_LEN_SYMS;
+        mean_q_sym /= PREAMBLE_LEN_SYMS;
+
+        // 3. 计算方差 (std_dev = sqrt(variance))
+        float var_i = 0.0f, var_q = 0.0f;
+        for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+            var_i += (sampled_syms[i].i - mean_i_sym) * (sampled_syms[i].i - mean_i_sym);
+            var_q += (sampled_syms[i].q - mean_q_sym) * (sampled_syms[i].q - mean_q_sym);
+        }
+        var_i /= PREAMBLE_LEN_SYMS;
+        var_q /= PREAMBLE_LEN_SYMS;
+
+        // "sep = std(real(sampled))+std(imag(sampled));"
+        float sep = sqrtf(var_i) + sqrtf(var_q);
+
+        if (sep > max_sep) {
+            max_sep = sep;
+            best_sym_offset = offset;
+        }
+    }
+    xil_printf("DEMOD_S6: Best symbol offset: %d\n", best_sym_offset);
+
+    // === 7. 相位校正 (来自 MATLAB Section 7) ===
+    // "rx_preamble_syms = frame_data(preamble_sample_indices);"
+    complex_float rx_preamble_syms[PREAMBLE_LEN_SYMS];
+    for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+        rx_preamble_syms[i] = frame_data[best_sym_offset + i * SAMPLES_PER_SYMBOL];
+    }
+
+    // "phase_offset = angle(sum(rx_preamble_syms.*conj(preamble_syms_ideal)));"
+    complex_float phase_sum = {0.0f, 0.0f};
+    for (int i = 0; i < PREAMBLE_LEN_SYMS; i++) {
+        phase_sum = complex_add(phase_sum,
+            complex_mul(rx_preamble_syms[i], complex_conj(g_preamble_syms_ideal[i]))
+        );
+    }
+    float phase_offset_rad = complex_angle_rad(phase_sum);
+
+    // "corrected_baseband_stream = baseband_data * exp(-1i*phase_offset);"
+    complex_float phase_correction;
+    phase_correction.i = cosf(-phase_offset_rad);
+    phase_correction.q = sinf(-phase_offset_rad);
+
+    xil_printf("DEMOD_S7: Average phase offset: %.2f deg. Correcting...\n",
+               phase_offset_rad * 180.0f / PI);
+
+    // **注意**：我们不再校正整个流，而是只校正我们将要解调的帧
+    // 这对应于 MATLAB 循环内部的逻辑
+
+    complex_float corrected_frame[FRAME_LEN_SAMPLES];
+    for(int i=0; i < FRAME_LEN_SAMPLES; i++) {
+        corrected_frame[i] = complex_mul(frame_data[i], phase_correction);
+    }
+
+    // === 8. 解调 (来自 MATLAB Section 8) ===
+    // "all_sample_indices = (1+best_sym_offset):..."
+    // "rx_syms = corrected_frame(all_sample_indices);"
+    complex_float rx_syms[FRAME_LEN_SYMS];
+    for(int i=0; i < FRAME_LEN_SYMS; i++) {
+        rx_syms[i] = corrected_frame[best_sym_offset + i * SAMPLES_PER_SYMBOL];
+    }
+
+    // "decoded_bits = strings(length(rx_syms),1);"
+    char decoded_bits[FRAME_LEN_SYMS][3]; // "11", "01" etc. + null terminator '\0'
+    memset(decoded_bits, 0, sizeof(decoded_bits));
+
+    int preamble_errors = 0;
+
+    // "for k=1:length(rx_syms)"
+    for(int k=0; k < FRAME_LEN_SYMS; k++) {
+        // "[~, idx]=min(abs(phase(k)-phase_table_deg));"
+        float rx_phase_rad = complex_angle_rad(rx_syms[k]);
+
+        float min_dist = 1000.0f;
+        int best_idx = 0;
+        for (int p = 0; p < 4; p++) {
+            float dist = fabsf(rx_phase_rad - g_phase_table_rad[p]);
+            // 处理 0/360 环绕
+            if (dist > PI) dist = 2.0f * PI - dist;
+
+            if (dist < min_dist) {
+                min_dist = dist;
+                best_idx = p;
+            }
+        }
+
+        // "decoded_bits(k) = bits_table_str(idx);"
+        strcpy(decoded_bits[k], g_bits_table_str[best_idx]);
+    }
+
+    // === 9. 打印结果 (来自 MATLAB Section 9, 11, 12) ===
+    xil_printf("DEMOD_S9: --- Frame 1 Results ---\n");
+
+    // 计算前导误码率
+    for(int k=0; k < PREAMBLE_LEN_SYMS; k++) {
+        float ideal_phase = g_preamble_phases_ideal_deg[k];
+        int ideal_idx = -1;
+        if(ideal_phase == 45.0f) ideal_idx = 0;
+        if(ideal_phase == 135.0f) ideal_idx = 1;
+        if(ideal_phase == 225.0f) ideal_idx = 2;
+        if(ideal_phase == 315.0f) ideal_idx = 3;
+
+        if (strcmp(decoded_bits[k], g_bits_table_str[ideal_idx]) != 0) {
+            preamble_errors++;
+        }
+    }
+    xil_printf("Preamble SER: %.2f%% (%d / %d)\n",
+               (float)preamble_errors * 100.0f / (float)PREAMBLE_LEN_SYMS,
+               preamble_errors, PREAMBLE_LEN_SYMS);
+
+    // --- 打印 ASCII (来自 MATLAB 最后一个 Section) ---
+    // "ascii_bytes = zeros(1,num_bytes,'uint8');"
+
+    // +1 是为了 null 终止符
+    char ascii_payload[PAYLOAD_LEN_SYMS / 4 + 1];
+    memset(ascii_payload, 0, sizeof(ascii_payload));
+    int ascii_idx = 0;
+
+    // "for k = 1:num_bytes"
+    for (int i = 0; i < PAYLOAD_LEN_SYMS; i += 4) {
+        // "byte_str = bits_str((k-1)*8+1:k*8);"
+        // 我们从 decoded_bits[PREAMBLE_LEN_SYMS + i] 开始
+        char* sym1 = decoded_bits[PREAMBLE_LEN_SYMS + i + 0];
+        char* sym2 = decoded_bits[PREAMBLE_LEN_SYMS + i + 1];
+        char* sym3 = decoded_bits[PREAMBLE_LEN_SYMS + i + 2];
+        char* sym4 = decoded_bits[PREAMBLE_LEN_SYMS + i + 3];
+
+        // "ascii_bytes(k) = bin2dec(byte_str);"
+        uint8_t current_byte = 0;
+
+        if(sym1[0] == '1') current_byte |= (1 << 7);
+        if(sym1[1] == '1') current_byte |= (1 << 6);
+
+        if(sym2[0] == '1') current_byte |= (1 << 5);
+        if(sym2[1] == '1') current_byte |= (1 << 4);
+
+        if(sym3[0] == '1') current_byte |= (1 << 3);
+        if(sym3[1] == '1') current_byte |= (1 << 2);
+
+        if(sym4[0] == '1') current_byte |= (1 << 1);
+        if(sym4[1] == '1') current_byte |= (1 << 0);
+
+        // 如果字节为 0 (null 终止符)，我们停止
+        if (current_byte == 0) {
+            break;
+        }
+
+        ascii_payload[ascii_idx++] = (char)current_byte;
+    }
+
+    // "fprintf('对应的 ASCII 字符: %s\n\n', ascii_chars);"
+    xil_printf("----------------------------------------\n");
+    xil_printf("DECODED PAYLOAD: \n%s\n", ascii_payload);
+    xil_printf("----------------------------------------\n");
+
+    return 0; // 成功
+}

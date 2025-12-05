@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="scw_hwspec" value="C:\Users\20915\Desktop\zijib\zc706_ad9361"/>
+	<item key="debug_files_selection" value="D:\zc706_ad9361\zc706_ad9361.runs\impl_1"/>
+	<item key="scw_hwspec_file_selection" value="D:\zc706_ad9361"/>
+	<item key="bootgen_files_selection" value="G:\zc706_ad9361\vitis\ad9361\Debug"/>
+	<item key="soc_flash_files_selection" value="G:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\boot"/>
+</section>

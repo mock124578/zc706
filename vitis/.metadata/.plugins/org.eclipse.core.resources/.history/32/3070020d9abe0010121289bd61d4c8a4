@@ -1,0 +1,20 @@
+// qpsk_tx.h
+#ifndef QPSK_TX_H
+#define QPSK_TX_H
+
+#include <stdint.h>
+#include <stdbool.h>
+
+// 初始化QPSK发射系统
+void qpsk_tx_init(void);
+
+// 发送ASCII消息
+bool qpsk_tx_send_message(const char* message);
+
+// 获取发送状态
+bool qpsk_tx_is_busy(void);
+
+// 停止发送
+void qpsk_tx_stop(void);
+
+#endif

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="log_adc_capture_to_sd"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="log_adc_capture_to_sd"/>
+			<item value="extern struct dds"/>
+			<item value="RSSI"/>
+			<item value="ad9361_rf_phy"/>
+			<item value="length"/>
+			<item value="    "/>
+			<item value="ad9361_calculate_ rf_clock_chain"/>
+			<item value="ad9361_set_tx_fir_config"/>
+			<item value="REG_DCXO_COARSE_TUNE"/>
+			<item value="REG_DCXO_FINE_TUNE_HIGH"/>
+			<item value="DATA_CLK_DELAY"/>
+			<item value="REG_RX_CLOCK_DATA_DELAY"/>
+			<item value="ad9361_phy_platform_data"/>
+			<item value="dc_offset_count_high_range"/>
+			<item value="REG_MULTICHIP_SYNC_AND_TX_MON_CTRL"/>
+		</list>
+		<list key="replacehistory">
+			<item value=""/>
+			<item value="sine_lut1"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1802"/>
+		<item key="DIALOG_Y_ORIGIN" value="471"/>
+		<item key="DIALOG_WIDTH" value="356"/>
+		<item key="DIALOG_HEIGHT" value="454"/>
+		<item key="DIALOG_FONT_NAME" value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|5|0|Microsoft YaHei UI"/>
+	</section>
+</section>

@@ -1,0 +1,8 @@
+10:30:41 **** Clean-only build of configuration Release for project ad9361_system ****
+make clean 
+rm -rf ./_sds
+rm -rf package
+rm -f system.bif
+
+10:30:42 Build Finished (took 188ms)
+

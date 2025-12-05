@@ -1,0 +1,426 @@
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Thu Nov  6 11:20:39 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_wr_rd_0_15'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_wr_rd_0_15 (xilinx.com:user:wr_rd:1.0) from (Rev. 14) to (Rev. 15)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_wr_rd_0_15'. These changes may impact your design.
+
+
+-Upgrade has added port 'valid_in'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Thu Nov  6 11:17:04 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_wr_rd_0_15'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_wr_rd_0_15 (xilinx.com:user:wr_rd:1.0) from (Rev. 13) to (Rev. 14)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_wr_rd_0_15'. These changes may impact your design.
+
+
+-Upgrade has added port 'dac_q_i_0'
+
+-Upgrade has added port 'dac_q_i_1'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Mon Oct 27 18:03:54 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 10) to (Rev. 11)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Mon Oct 27 17:16:21 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 9) to (Rev. 10)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_adc_fifo_ad9361_0_0'. These changes may impact your design.
+
+
+-Upgrade has added port 'valid_in'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Mon Oct 27 17:11:15 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 8) to (Rev. 9)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_adc_fifo_ad9361_0_0'. These changes may impact your design.
+
+
+-Upgrade has added port 'q_i_0'
+
+-Upgrade has added port 'q_i_1'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Mon Oct 20 10:07:04 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 7) to (Rev. 8)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Interface Information
+------------------------
+
+Detected external interface differences while upgrading 'system_adc_fifo_ad9361_0_0'.
+
+
+-Upgrade has removed interface 'rd_clk'
+
+-Upgrade has removed interface 'rd_rst'
+
+-Upgrade has removed interface 'wr_clk'
+
+-Upgrade has removed interface 'wr_rst'
+
+-Upgrade has added interface 'adc_rd_clk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 'adc_rd_rst' (xilinx.com:signal:reset:1.0)
+
+-Upgrade has added interface 'adc_wr_clk' (xilinx.com:signal:clock:1.0)
+
+-Upgrade has added interface 'adc_wr_rst' (xilinx.com:signal:reset:1.0)
+
+
+3. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_adc_fifo_ad9361_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'rd_clk'
+
+-Upgrade has removed port 'rd_data_0'
+
+-Upgrade has removed port 'rd_data_1'
+
+-Upgrade has removed port 'rd_data_2'
+
+-Upgrade has removed port 'rd_data_3'
+
+-Upgrade has removed port 'rd_rst'
+
+-Upgrade has removed port 'wr_clk'
+
+-Upgrade has removed port 'wr_rst'
+
+-Upgrade has added port 'adc_rd_clk'
+
+-Upgrade has added port 'adc_rd_rst'
+
+-Upgrade has added port 'adc_wr_clk'
+
+-Upgrade has added port 'adc_wr_rst'
+
+-Upgrade has added port 'ila_data_0'
+
+-Upgrade has added port 'ila_data_1'
+
+-Upgrade has added port 'ila_data_2'
+
+-Upgrade has added port 'ila_data_3'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Mon Oct 20 09:14:16 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 6) to (Rev. 7)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 18:54:27 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0 (Rev. 6)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 18:50:45 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+CAUTION (success, with warnings) in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 4) to (Rev. 6)
+
+After upgrade, an IP may have parameter and port differences compared to the original customization. Please review the parameters within the IP customization GUI to ensure proper functionality. Also, please review the updated IP instantiation template to ensure proper connectivity, and update your design if required.
+
+2. Connection Warnings
+----------------------
+
+Detected external port differences while upgrading 'system_adc_fifo_ad9361_0_0'. These changes may impact your design.
+
+
+-Upgrade has removed port 'wr_data_0'
+
+-Upgrade has removed port 'wr_data_1'
+
+-Upgrade has removed port 'wr_data_2'
+
+-Upgrade has removed port 'wr_data_3'
+
+-Upgrade has added port 'adc_data_0'
+
+-Upgrade has added port 'adc_data_1'
+
+-Upgrade has added port 'adc_data_2'
+
+-Upgrade has added port 'adc_data_3'
+
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 18:42:53 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_wr_rd_0_15'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_wr_rd_0_15 (xilinx.com:user:wr_rd:1.0) from (Rev. 12) to (Rev. 13)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 18:42:53 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0) from (Rev. 2) to (Rev. 4)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 18:36:37 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_adc_fifo_ad9361_0_0'
+
+1. Summary
+----------
+
+SUCCESS in the conversion of system_adc_fifo_ad9361_0_0 (xilinx.com:user:adc_fifo_ad9361:1.0 (Rev. 2)) to Vivado generation flows.
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 13:43:38 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_wr_rd_0_15'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_wr_rd_0_15 (xilinx.com:user:wr_rd:1.0) from (Rev. 9) to (Rev. 12)
+
+
+
+
+
+
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
+| Date         : Fri Oct 17 11:47:25 2025
+| Host         : little running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7z045ffg900-2
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'system_wr_rd_0_15'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of system_wr_rd_0_15 (xilinx.com:user:wr_rd:1.0) from (Rev. 6) to (Rev. 9)
+

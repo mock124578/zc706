@@ -1,0 +1,39 @@
+#ifndef QPSK_DEMOD_H
+#define QPSK_DEMOD_H
+
+#include <stdint.h>
+#include <math.h>
+
+// 复数类型定义
+typedef struct {
+    float real;
+    float imag;
+} complex_float_t;
+
+// QPSK解调器结构体
+typedef struct {
+    // 配置参数
+    float phase_45_deg;
+    float phase_135_deg;
+    float phase_225_deg;
+    float phase_315_deg;
+
+    // 状态变量
+    uint32_t symbols_processed;
+    uint32_t bit_errors;
+} qpsk_demod_t;
+
+// 初始化函数
+void qpsk_demod_init(qpsk_demod_t* demod);
+
+// 核心解调函数
+void qpsk_demod_symbol(qpsk_demod_t* demod, complex_float_t symbol, uint8_t* bit1, uint8_t* bit2);
+
+// 批量解调函数
+void qpsk_demod_batch(qpsk_demod_t* demod, complex_float_t* symbols, uint8_t* bits_output, uint32_t num_symbols);
+
+// 工具函数
+const char* qpsk_bits_to_string(uint8_t bit1, uint8_t bit2);
+float qpsk_get_ber(qpsk_demod_t* demod);
+
+#endif

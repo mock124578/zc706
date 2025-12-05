@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="ad9361" location="C:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/ad9361" platform="C:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/system_top.xpfm" platformUID="xilinx:zc706::0.0(custom)" systemProject="ad9361_system" sysConfig="system_top" runtime="cpp" cpu="standalone_ps7_cortexa9_0" cpuInstance="ps7_cortexa9_0" os="standalone" mssSignature="e2135b19541ef66827acca4d74907bb4">
+  <configuration name="Debug" id="xilinx.gnu.armv7.exe.debug.713735692">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.armv7.exe.release.1607999021" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="empty_application"/>
+</sdkproject:SdkProject>

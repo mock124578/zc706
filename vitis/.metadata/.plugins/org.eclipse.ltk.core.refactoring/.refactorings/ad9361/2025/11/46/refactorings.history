@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;ad9361/src/user_diy/qpsk_mapper.h&apos; to &apos;qpsk_demod.h&apos;" description="Rename resource &apos;qpsk_mapper.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/user_diy/qpsk_mapper.h" name="qpsk_demod.h" stamp="1762856375728" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;ad9361/src/user_diy/qpsk_mapper.c&apos; to &apos;qpsk_demod.c&apos;" description="Rename resource &apos;qpsk_mapper.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/user_diy/qpsk_mapper.c" name="qpsk_demod.c" stamp="1762856407335" updateReferences="true"/>
+</session>

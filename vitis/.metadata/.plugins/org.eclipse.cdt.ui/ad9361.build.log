@@ -1,0 +1,230 @@
+10:31:06 **** Build of configuration Release for project ad9361 ****
+make all 
+G:/vivado.2021.2/Vitis/2021.2/gnuwin/bin/make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+G:/vivado.2021.2/Vitis/2021.2/gnuwin/bin/make --no-print-directory main-build
+'Building file: ../src/user_diy/adc_sd_logger.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/user_diy/adc_sd_logger.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/user_diy/adc_sd_logger.d" -MT"src/user_diy/adc_sd_logger.o" -o "src/user_diy/adc_sd_logger.o" "../src/user_diy/adc_sd_logger.c"
+'Finished building: ../src/user_diy/adc_sd_logger.c'
+' '
+'Building file: ../src/user_diy/qpsk_demod.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/user_diy/qpsk_demod.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/user_diy/qpsk_demod.d" -MT"src/user_diy/qpsk_demod.o" -o "src/user_diy/qpsk_demod.o" "../src/user_diy/qpsk_demod.c"
+../src/user_diy/qpsk_demod.c:22:22: warning: 'g_phase_table_deg' defined but not used [-Wunused-const-variable=]
+   22 | static const float   g_phase_table_deg[4] = {45.0f, 135.0f, 225.0f, 315.0f};
+      |                      ^~~~~~~~~~~~~~~~~
+'Finished building: ../src/user_diy/qpsk_demod.c'
+' '
+'Building file: ../src/user_diy/qpsk_tx.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/user_diy/qpsk_tx.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/user_diy/qpsk_tx.d" -MT"src/user_diy/qpsk_tx.o" -o "src/user_diy/qpsk_tx.o" "../src/user_diy/qpsk_tx.c"
+'Finished building: ../src/user_diy/qpsk_tx.c'
+' '
+'Building file: ../src/platform_xilinx/adc_core.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/platform_xilinx/adc_core.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/platform_xilinx/adc_core.d" -MT"src/platform_xilinx/adc_core.o" -o "src/platform_xilinx/adc_core.o" "../src/platform_xilinx/adc_core.c"
+../src/platform_xilinx/adc_core.c: In function 'adc_set_calib_scale_phase':
+../src/platform_xilinx/adc_core.c:345:7: warning: 'tmp' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  345 |   tmp &= ~ADC_IQCOR_COEFF_2(~0);                   // 清除旧的系数
+      |       ^~
+In file included from ../src/platform_xilinx/adc_core.c:12:
+../src/platform_xilinx/adc_core.c: In function 'adc_get_calib_scale_phase':
+../src/platform_xilinx/adc_core.h:110:46: warning: 'tmp' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  110 | #define ADC_TO_IQCOR_COEFF_2(x)  (((x) >> 0) & 0xFFFF)
+      |                                              ^
+../src/platform_xilinx/adc_core.c:370:11: note: 'tmp' was declared here
+  370 |  uint32_t tmp;
+      |           ^~~
+'Finished building: ../src/platform_xilinx/adc_core.c'
+' '
+'Building file: ../src/platform_xilinx/dac_core.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/platform_xilinx/dac_core.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/platform_xilinx/dac_core.d" -MT"src/platform_xilinx/dac_core.o" -o "src/platform_xilinx/dac_core.o" "../src/platform_xilinx/dac_core.c"
+../src/platform_xilinx/dac_core.c: In function 'dac_init':
+../src/platform_xilinx/dac_core.c:157:11: warning: unused variable 'length' [-Wunused-variable]
+  157 |  uint32_t length;
+      |           ^~~~~~
+../src/platform_xilinx/dac_core.c: In function 'dds_set_frequency':
+../src/platform_xilinx/dac_core.c:388:6: warning: 'reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  388 |  reg &= ~DAC_DDS_INCR(~0);
+      |      ^~
+../src/platform_xilinx/dac_core.c: In function 'dac_init':
+../src/platform_xilinx/dac_core.c:173:14: warning: 'reg_ctrl_2' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  173 |   reg_ctrl_2 &= ~DAC_R1_MODE;
+      |              ^~
+../src/platform_xilinx/dac_core.c: In function 'dds_set_calib_scale_phase':
+../src/platform_xilinx/dac_core.c:659:7: warning: 'reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  659 |   reg &= ~DAC_IQCOR_COEFF_2(~0);
+      |       ^~
+In file included from ../src/platform_xilinx/dac_core.c:7:
+../src/platform_xilinx/dac_core.c: In function 'dds_get_calib_scale_phase':
+../src/platform_xilinx/dac_core.h:175:46: warning: 'reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  175 | #define DAC_TO_IQCOR_COEFF_2(x)  (((x) >> 0) & 0xFFFF)
+      |                                              ^
+../src/platform_xilinx/dac_core.c:677:11: note: 'reg' was declared here
+  677 |  uint32_t reg;
+      |           ^~~
+In file included from ../src/platform_xilinx/dac_core.c:7:
+../src/platform_xilinx/dac_core.c: In function 'dds_get_calib_scale':
+../src/platform_xilinx/dac_core.h:175:46: warning: 'reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  175 | #define DAC_TO_IQCOR_COEFF_2(x)  (((x) >> 0) & 0xFFFF)
+      |                                              ^
+../src/platform_xilinx/dac_core.c:677:11: note: 'reg' was declared here
+  677 |  uint32_t reg;
+      |           ^~~
+In file included from ../src/platform_xilinx/dac_core.c:7:
+../src/platform_xilinx/dac_core.c: In function 'dds_get_calib_phase':
+../src/platform_xilinx/dac_core.h:175:46: warning: 'reg' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  175 | #define DAC_TO_IQCOR_COEFF_2(x)  (((x) >> 0) & 0xFFFF)
+      |                                              ^
+../src/platform_xilinx/dac_core.c:677:11: note: 'reg' was declared here
+  677 |  uint32_t reg;
+      |           ^~~
+'Finished building: ../src/platform_xilinx/dac_core.c'
+' '
+'Building file: ../src/platform_xilinx/platform.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/platform_xilinx/platform.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/platform_xilinx/platform.d" -MT"src/platform_xilinx/platform.o" -o "src/platform_xilinx/platform.o" "../src/platform_xilinx/platform.c"
+'Finished building: ../src/platform_xilinx/platform.c'
+' '
+'Building file: ../src/console_commands/command.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/console_commands/command.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/console_commands/command.d" -MT"src/console_commands/command.o" -o "src/console_commands/command.o" "../src/console_commands/command.c"
+../src/console_commands/command.c: In function 'cmd_save_data':
+../src/console_commands/command.c:1028:9: warning: implicit declaration of function 'strcpy' [-Wimplicit-function-declaration]
+ 1028 |         strcpy(base_filename, "user_diy");
+      |         ^~~~~~
+../src/console_commands/command.c:1028:9: warning: incompatible implicit declaration of built-in function 'strcpy'
+../src/console_commands/command.c:50:1: note: include '<string.h>' or provide a declaration of 'strcpy'
+   49 | #include "qpsk_demod.h"
+  +++ |+#include <string.h>
+   50 | /******************************************************************************/
+../src/console_commands/command.c:1031:5: warning: implicit declaration of function 'xil_printf'; did you mean 'viprintf'? [-Wimplicit-function-declaration]
+ 1031 |     xil_printf("命令: 保存ADC数据，基础文件名: %s\n", base_filename);
+      |     ^~~~~~~~~~
+      |     viprintf
+../src/console_commands/command.c:1032:5: warning: implicit declaration of function 'log_adc_capture_to_sd'; did you mean 'log_adc_data_to_sd'? [-Wimplicit-function-declaration]
+ 1032 |     log_adc_capture_to_sd(ad9361_phy, base_filename);
+      |     ^~~~~~~~~~~~~~~~~~~~~
+      |     log_adc_data_to_sd
+'Finished building: ../src/console_commands/command.c'
+' '
+'Building file: ../src/console_commands/console.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/console_commands/console.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/console_commands/console.d" -MT"src/console_commands/console.o" -o "src/console_commands/console.o" "../src/console_commands/console.c"
+../src/console_commands/console.c: In function 'int_to_str':
+../src/console_commands/console.c:141:2: warning: value computed is not used [-Wunused-value]
+  141 |  *buffer_ptr++;
+      |  ^~~~~~~~~~~~~
+'Finished building: ../src/console_commands/console.c'
+' '
+'Building file: ../src/ad9361.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/ad9361.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/ad9361.d" -MT"src/ad9361.o" -o "src/ad9361.o" "../src/ad9361.c"
+In file included from D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx/platform.h:46,
+                 from ../src/ad9361.c:49:
+../src/ad9361.c: In function 'ad9361_load_gt':
+../src/ad9361.c:1413:26: warning: format '%d' expects argument of type 'int', but argument 4 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+ 1413 |  dev_dbg(&phy->spi->dev, "%s: frequency %"PRIu64" (band %d)",
+      |                          ^~~~~~~~~~~~~~~~~
+ 1414 |   __func__, freq, band);
+      |                   ~~~~    
+      |                   |
+      |                   uint32_t {aka long unsigned int}
+D:\zc706_ad9361\vitis\ad9361\src/util.h:77:52: note: in definition of macro 'dev_dbg'
+   77 | #define dev_dbg(dev, format, ...) ({ if (0) printf(format, ## __VA_ARGS__); })
+      |                                                    ^~~~~~
+../src/ad9361.c: In function 'set_split_table_gain':
+../src/ad9361.c:2115:16: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 2115 |   dev_err(dev, "Invalid gain %d, supported range [%d - %d]\n",
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2116 |    rx_gain->gain_db, phy->gt_info[ad9361_gt(phy)].
+      |    ~~~~~~~~~~~~~~~~
+      |           |
+      |           int32_t {aka long int}
+D:\zc706_ad9361\vitis\ad9361\src/util.h:72:45: note: in definition of macro 'dev_err'
+   72 | #define dev_err(dev, format, ...)  ({printf(format, ## __VA_ARGS__);printf("\n"); })
+      |                                             ^~~~~~
+../src/ad9361.c:2115:31: note: format string is defined here
+ 2115 |   dev_err(dev, "Invalid gain %d, supported range [%d - %d]\n",
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx/platform.h:46,
+                 from ../src/ad9361.c:49:
+../src/ad9361.c: In function 'set_full_table_gain':
+../src/ad9361.c:2159:16: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 2159 |   dev_err(dev, "Invalid gain %d, supported range [%d - %d]\n",
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2160 |    rx_gain->gain_db, phy->gt_info[ad9361_gt(phy)].
+      |    ~~~~~~~~~~~~~~~~
+      |           |
+      |           int32_t {aka long int}
+D:\zc706_ad9361\vitis\ad9361\src/util.h:72:45: note: in definition of macro 'dev_err'
+   72 | #define dev_err(dev, format, ...)  ({printf(format, ## __VA_ARGS__);printf("\n"); })
+      |                                             ^~~~~~
+../src/ad9361.c:2159:31: note: format string is defined here
+ 2159 |   dev_err(dev, "Invalid gain %d, supported range [%d - %d]\n",
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+'Finished building: ../src/ad9361.c'
+' '
+'Building file: ../src/ad9361_api.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/ad9361_api.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/ad9361_api.d" -MT"src/ad9361_api.o" -o "src/ad9361_api.o" "../src/ad9361_api.c"
+'Finished building: ../src/ad9361_api.c'
+' '
+'Building file: ../src/ad9361_conv.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/ad9361_conv.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/ad9361_conv.d" -MT"src/ad9361_conv.o" -o "src/ad9361_conv.o" "../src/ad9361_conv.c"
+In file included from D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx/platform.h:46,
+                 from ../src/ad9361_conv.c:46:
+../src/ad9361_conv.c: In function 'ad9361_dig_tune':
+../src/ad9361_conv.c:514:26: warning: format '%u' expects argument of type 'unsigned int', but argument 3 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+  514 |  dev_dbg(&phy->spi->dev, "%s: freq %u flags 0x%X\n", __func__,
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+  515 |   max_freq, flags);
+      |   ~~~~~~~~                
+      |   |
+      |   uint32_t {aka long unsigned int}
+D:\zc706_ad9361\vitis\ad9361\src/util.h:77:52: note: in definition of macro 'dev_dbg'
+   77 | #define dev_dbg(dev, format, ...) ({ if (0) printf(format, ## __VA_ARGS__); })
+      |                                                    ^~~~~~
+../src/ad9361_conv.c:514:37: note: format string is defined here
+  514 |  dev_dbg(&phy->spi->dev, "%s: freq %u flags 0x%X\n", __func__,
+      |                                    ~^
+      |                                     |
+      |                                     unsigned int
+      |                                    %lu
+'Finished building: ../src/ad9361_conv.c'
+' '
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+'Finished building: ../src/main.c'
+' '
+'Building file: ../src/syscalls.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/syscalls.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/syscalls.d" -MT"src/syscalls.o" -o "src/syscalls.o" "../src/syscalls.c"
+'Finished building: ../src/syscalls.c'
+' '
+'Building file: ../src/util.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O2 -I"D:\zc706_ad9361\vitis\ad9361\src\user_diy" -I"D:\zc706_ad9361\vitis\system_top\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp\ps7_cortexa9_0\include" -I"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -I"D:\zc706_ad9361\vitis\ad9361\src\platform_xilinx" -I"D:\zc706_ad9361\vitis\ad9361\src\console_commands" -I"D:\zc706_ad9361\vitis\ad9361\src" -c -fmessage-length=0 -MT"src/util.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/util.d" -MT"src/util.o" -o "src/util.o" "../src/util.c"
+'Finished building: ../src/util.c'
+' '
+'Building target: ad9361.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -L"D:\zc706_ad9361\vitis\system_top\export\system_top\sw\system_top\standalone_ps7_cortexa9_0\bsplib\lib" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/Users/20915/Desktop/zijib/zc706_ad9361/vitis/system_top/export/system_top/sw/system_top/standalone_ps7_cortexa9_0/bsplib/lib -o "ad9361.elf"  ./src/user_diy/adc_sd_logger.o ./src/user_diy/qpsk_demod.o ./src/user_diy/qpsk_tx.o  ./src/platform_xilinx/adc_core.o ./src/platform_xilinx/dac_core.o ./src/platform_xilinx/platform.o  ./src/console_commands/command.o ./src/console_commands/console.o  ./src/ad9361.o ./src/ad9361_api.o ./src/ad9361_conv.o ./src/main.o ./src/syscalls.o ./src/util.o   -lxil -lxliffs -lm -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+g:/vivado.2021.2/vitis/2021.2/gnu/aarch32/nt/gcc-arm-none-eabi/x86_64-oesdk-mingw32/usr/bin/arm-xilinx-eabi/../../libexec/arm-xilinx-eabi/gcc/arm-xilinx-eabi/10.2.0/real-ld.exe: cannot find -lxliffs
+collect2.exe: error: ld returned 1 exit status
+make[1]: *** [makefile:46: ad9361.elf] Error 1
+make: *** [makefile:37: all] Error 2
+
+10:31:11 Build Finished (took 5s.506ms)
+
